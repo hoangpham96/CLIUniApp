@@ -144,13 +144,28 @@ class University:
             choice = inputc("\tAdmin System (c/g/p/r/s/x): ","cyan").lower()
 
             match choice:
-                case 'c': break
-                case 'g': break
-                case 'p': break
-                case 'r': break
-                case 's': break
+                case 'c': self.clearDatabase()
+                case 'g': self.groupStudents()
+                case 'p': self.partitionStudents()
+                case 'r': self.removeStudent()
+                case 's': self.showStudents()
                 case 'x': break
                 case _: printc("\tUnknown choice","red")
+
+    def clearDatabase(self):
+        pass
+
+    def groupStudents(self):
+        pass
+
+    def partitionStudents(self):
+        pass
+
+    def removeStudent(self):
+        pass
+
+    def showStudents(self):
+        pass
 
     def studentMenu(self):
         choice = ''
