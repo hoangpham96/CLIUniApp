@@ -63,6 +63,18 @@ class Student:
                 case 'x': break
                 case _: printc("\t\tUnknown choice","red")
 
+    def getId(self):
+        return self._id
+    
+    def getName(self):
+        return self._name
+    
+    def getEmail(self):
+        return self._email
+    
+    def getSubjects(self):
+        return self._subjects
+
 class Subject:
     def __init__(self) -> None:
         self._id = self.generateId()
