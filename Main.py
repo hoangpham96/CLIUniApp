@@ -1,3 +1,6 @@
+from Utils import printc
+from Utils import inputc
+
 class Student:
     pass
 
@@ -14,7 +17,7 @@ class University:
     def adminMenu(self):
         choice = ''
         while choice != 'x':
-            choice = input("\tAdmin System (c/g/p/r/s/x): ").lower()
+            choice = inputc("\tAdmin System (c/g/p/r/s/x): ","cyan").lower()
 
             match choice:
                 case 'c': break
@@ -23,12 +26,12 @@ class University:
                 case 'r': break
                 case 's': break
                 case 'x': break
-                case _: print("Unknown choice")
+                case _: printc("Unknown choice","red")
 
     def studentMenu(self):
         choice = ''
         while choice != 'x':
-            choice = input("\tStudent System (l/r/x): ").lower()
+            choice = inputc("\tStudent System (l/r/x): ","cyan").lower()
 
             match choice:
                 case 'l': break
@@ -37,7 +40,7 @@ class University:
                 case _: print("Unknown choice")
 
     def studentRegister(self):
-        print("\tStudent sign up")
+        printc("\tStudent sign up","green")
         emailInput = input("\tEmail: ").lower()
         passwordInput = input("\tPassword: ").lower()
         #TODO: email/password verification logic
@@ -47,15 +50,15 @@ class University:
     def menu(self):
         choice = ''
         while choice != 'x':
-            choice = input("University System: (A)dmin, (S)tudent, or e(X)it: ").lower()
+            choice = inputc("University System: (A)dmin, (S)tudent, or e(X)it: ","cyan").lower()
 
             match choice:
                 case 'a': self.adminMenu()
                 case 's': self.studentMenu()
                 case 'x': break
-                case _: print("Unknown choice")
+                case _: printc("Unknown choice","red")
 
-        print("Thank You!")
+        printc("Thank You!","yellow")
 
 #Starting the app
 if __name__ == '__main__':
