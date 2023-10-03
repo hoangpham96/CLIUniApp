@@ -28,7 +28,22 @@ class Student:
             printc("\t\tStudents are allowed to enrol in 4 subjects only","red")
 
     def remove(self):
-        pass
+        if len(self._subjects) == 0:
+            printc("\t\tNo subjects enrolled","red")
+            return
+
+        removeId = input("\t\tRemove Subject by ID: ")
+        found = False
+        for index, sub in enumerate(self._subjects):
+            if sub.getId() == removeId:
+                printc(f"\t\tDropping Subject-{sub.getId()}","yellow")
+                self._subjects.pop(index)
+                printc(f"\t\tYou are now enrolled in {len(self._subjects)} out of 4 subjects","yellow")
+                found = True
+                break
+        
+        if not found:
+            printc("\t\tSubject could not be found", "red")
 
     def show(self):
         printc(f"\t\tShowing {len(self._subjects)} subjects","yellow")
