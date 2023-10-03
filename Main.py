@@ -16,7 +16,15 @@ class Student:
         return f"{id:06d}"
 
     def changePassword(self):
-        pass
+        #TODO: implement password format checker
+        newPassword = input("\t\tNew Password: ")
+        newPasswordConfirm = input("\t\tConfirm Password: ")
+
+        while newPassword != newPasswordConfirm:
+            printc("\t\tPassword does not match - try again", "red")
+            newPasswordConfirm = input("\t\tConfirm Password: ")
+
+        self._password = newPassword
 
     def enrol(self):
         if len(self._subjects) < 4:
