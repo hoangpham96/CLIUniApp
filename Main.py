@@ -13,7 +13,7 @@ class Student:
     def generateId(self):
         #TODO: implement functionality to exclude existing student ID
         id = random.randint(1,999999)
-        return f"{id:6}"
+        return f"{id:06d}"
 
     def changePassword(self):
         pass
@@ -43,17 +43,28 @@ class Student:
 class Subject:
     def __init__(self) -> None:
         self._id = self.generateId()
-        self._mark = self.generateMark()
-        self._grade = self.calculateGrade()
+        self.generateMark()
+        self.calculateGrade()
 
     def generateId(self):
-        return None
-    
+        #TODO: implement functionality to exclude existing student ID
+        id = random.randint(1,999)
+        return f"{id:03d}"   
+     
     def generateMark(self):
-        return None
+        self._mark = random.randint(25,100)
 
     def calculateGrade(self):
-        return None
+        if self._mark >= 85:
+            self._grade = "HD"
+        elif self._mark >= 75:
+            self._grade = "D"
+        elif self._mark >= 65:
+            self._grade = "C"
+        elif self._mark >= 50:
+            self._grade = "P"
+        else:
+            self._grade = "Z"
 
 class Database:
     def check(self):
