@@ -32,9 +32,17 @@ class University:
 
             match choice:
                 case 'l': break
-                case 'r': break
+                case 'r': self.studentRegister()
                 case 'x': break
                 case _: print("Unknown choice")
+
+    def studentRegister(self):
+        print("\tStudent sign up")
+        emailInput = input("\tEmail: ").lower()
+        passwordInput = input("\tPassword: ").lower()
+        #TODO: email/password verification logic
+        nameInput = input("\tName: ").lower()
+        #TODO: save new student data
 
     def menu(self):
         choice = ''
