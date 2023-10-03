@@ -51,7 +51,7 @@ class Student:
                 break
         
         if not found:
-            printc("\t\tSubject could not be found", "red")
+            printc("\t\tSubject {removeId} does not exist", "red")
 
     def show(self):
         printc(f"\t\tShowing {len(self._subjects)} subjects","yellow")
