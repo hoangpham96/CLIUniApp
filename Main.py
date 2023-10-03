@@ -2,7 +2,31 @@ from Utils import printc
 from Utils import inputc
 
 class Student:
-    pass
+    def __init__(self,name,email,password) -> None:
+        self.id = self.generateId()
+        self.name = name
+        self.email = email
+        self.password = password
+        self.subjects = []
+
+    def generateId(self):
+        return None
+
+    def changePassword(self,password):
+        #TODO: check password
+        self.password = password
+
+    def enrol(self):
+        pass
+
+    def remove(self):
+        pass
+
+    def show(self):
+        pass
+
+    def menu(self):
+        pass
 
 class Subject:
     pass
