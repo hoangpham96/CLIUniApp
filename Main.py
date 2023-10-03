@@ -3,18 +3,18 @@ from Utils import inputc
 
 class Student:
     def __init__(self,name,email,password) -> None:
-        self.id = self.generateId()
-        self.name = name
-        self.email = email
-        self.password = password
-        self.subjects = []
+        self._id = self.generateId()
+        self._name = name
+        self._email = email
+        self._password = password
+        self._subjects = []
 
     def generateId(self):
         return None
 
     def changePassword(self,password):
         #TODO: check password
-        self.password = password
+        self._password = password
 
     def enrol(self):
         pass
@@ -30,9 +30,9 @@ class Student:
 
 class Subject:
     def __init__(self) -> None:
-        self.id = self.generateId()
-        self.mark = self.generateMark()
-        self.grade = self.calculateGrade()
+        self._id = self.generateId()
+        self._mark = self.generateMark()
+        self._grade = self.calculateGrade()
 
     def generateId(self):
         return None
