@@ -120,7 +120,7 @@ class Subject:
 
 class Database:
     def check(self):
-        pass
+        ... #Token Change
 
     def create(self):
         pass
