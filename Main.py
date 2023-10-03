@@ -32,7 +32,20 @@ class Subject:
     pass
 
 class Database:
-    pass
+    def check(self):
+        pass
+
+    def create(self):
+        pass
+
+    def read(self):
+        pass
+
+    def update(self):
+        pass
+
+    def delete(self):
+        pass
 
 class University:
     def __init__(self) -> None:
