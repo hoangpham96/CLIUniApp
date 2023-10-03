@@ -19,13 +19,21 @@ class Student:
         pass
 
     def enrol(self):
-        pass
+        if len(self._subjects) < 4:
+            sub = Subject()
+            printc(f"\t\tEnrolling in Subject-{sub.getId()}","yellow")
+            self._subjects.append(sub)
+            printc(f"\t\tYou are now enrolled in {len(self._subjects)} out of 4 subjects","yellow")
+        else:
+            printc("\t\tStudents are allowed to enrol in 4 subjects only","red")
 
     def remove(self):
         pass
 
     def show(self):
-        pass
+        printc(f"\t\tShowing {len(self._subjects)} subjects","yellow")
+        for sub in self._subjects:
+            print(f"\t\t[ Subject::{sub.getId()} -- mark = {sub.getMark(): >3} -- grade = {sub.getGrade(): >3} ]")
 
     def menu(self):
         choice = ''
@@ -38,7 +46,7 @@ class Student:
                 case 'r': self.remove()
                 case 's': self.show()
                 case 'x': break
-                case _: printc("Unknown choice","red")
+                case _: printc("\t\tUnknown choice","red")
 
 class Subject:
     def __init__(self) -> None:
@@ -65,6 +73,15 @@ class Subject:
             self._grade = "P"
         else:
             self._grade = "Z"
+
+    def getId(self):
+        return self._id
+    
+    def getMark(self):
+        return self._mark
+    
+    def getGrade(self):
+        return self._grade
 
 class Database:
     def check(self):
@@ -98,7 +115,7 @@ class University:
                 case 'r': break
                 case 's': break
                 case 'x': break
-                case _: printc("Unknown choice","red")
+                case _: printc("\tUnknown choice","red")
 
     def studentMenu(self):
         choice = ''
@@ -109,7 +126,7 @@ class University:
                 case 'l': self.studentLogin()
                 case 'r': self.studentRegister()
                 case 'x': break
-                case _: print("Unknown choice")
+                case _: printc("\tUnknown choice","red")
 
     def studentLogin(self):
         printc("\tStudent Sign In","green")
