@@ -1,5 +1,6 @@
 from Utils import printc
 from Utils import inputc
+import random
 
 class Student:
     def __init__(self,name,email,password) -> None:
@@ -10,11 +11,12 @@ class Student:
         self._subjects = []
 
     def generateId(self):
-        return None
+        #TODO: implement functionality to exclude existing student ID
+        id = random.randint(1,999999)
+        return f"{id:6}"
 
-    def changePassword(self,password):
-        #TODO: check password
-        self._password = password
+    def changePassword(self):
+        pass
 
     def enrol(self):
         pass
@@ -26,7 +28,17 @@ class Student:
         pass
 
     def menu(self):
-        pass
+        choice = ''
+        while choice != 'x':
+            choice = inputc("\t\tStudent Course Menu (c/e/r/s/x): ","cyan").lower()
+
+            match choice:
+                case 'c': self.changePassword()
+                case 'e': self.enrol()
+                case 'r': self.remove()
+                case 's': self.show()
+                case 'x': break
+                case _: printc("Unknown choice","red")
 
 class Subject:
     def __init__(self) -> None:
@@ -61,7 +73,7 @@ class Database:
 
 class University:
     def __init__(self) -> None:
-        pass
+        self.students = [Student("test","test","test")] #TODO: replace with student data read from file
 
     def adminMenu(self):
         choice = ''
@@ -83,13 +95,20 @@ class University:
             choice = inputc("\tStudent System (l/r/x): ","cyan").lower()
 
             match choice:
-                case 'l': break
+                case 'l': self.studentLogin()
                 case 'r': self.studentRegister()
                 case 'x': break
                 case _: print("Unknown choice")
 
+    def studentLogin(self):
+        printc("\tStudent Sign In","green")
+        emailInput = input("\tEmail: ").lower()
+        passwordInput = input("\tPassword: ").lower()
+        #TODO: email/password verification logic
+        self.students[0].menu()
+
     def studentRegister(self):
-        printc("\tStudent sign up","green")
+        printc("\tStudent Sign Up","green")
         emailInput = input("\tEmail: ").lower()
         passwordInput = input("\tPassword: ").lower()
         #TODO: email/password verification logic
