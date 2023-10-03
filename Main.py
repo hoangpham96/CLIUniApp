@@ -29,7 +29,19 @@ class Student:
         pass
 
 class Subject:
-    pass
+    def __init__(self) -> None:
+        self.id = self.generateId()
+        self.mark = self.generateMark()
+        self.grade = self.calculateGrade()
+
+    def generateId(self):
+        return None
+    
+    def generateMark(self):
+        return None
+
+    def calculateGrade(self):
+        return None
 
 class Database:
     def check(self):
