@@ -1,6 +1,8 @@
 from Utils import printc
 from Utils import inputc
+from Utils import DATA_FILENAME
 import random
+import os
 
 class Student:
     def __init__(self,name,email,password) -> None:
@@ -120,19 +122,30 @@ class Subject:
 
 class Database:
     def check(self):
-        ... #Token Change
+        return os.path.exists(DATA_FILENAME)
 
     def create(self):
-        pass
+        if not self.check():
+            with open(DATA_FILENAME,'w') as handler:
+                handler.write("")
+                handler.close()
 
     def read(self):
-        pass
+        result = ''
+        with open(DATA_FILENAME,'r') as handler:
+            result = handler.read()
+            handler.close()
 
-    def update(self):
-        pass
+        return result
+
+    def update(self, data):
+        with open(DATA_FILENAME,'w') as handler:
+                handler.write(data)
+                handler.close()
 
     def delete(self):
-        pass
+        if self.check():
+            os.remove(DATA_FILENAME)
 
 class University:
     def __init__(self) -> None:

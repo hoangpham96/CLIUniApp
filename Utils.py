@@ -1,3 +1,5 @@
+DATA_FILENAME = "student.data"
+
 colorCode = {
     "purple" : '\033[95m',
     "blue" : '\033[94m',
