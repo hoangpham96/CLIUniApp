@@ -1,6 +1,4 @@
-from Utils import printc
-from Utils import inputc
-from Utils import DATA_FILENAME
+from Utils import *
 import random
 import json
 import os
@@ -276,15 +274,30 @@ class University:
         if studentLogin:
             studentLogin.menu()
         else:
-            printc("\tInvalid Login","red")
+            printc("\tStudent does not exist","red")
 
     def studentRegister(self):
         printc("\tStudent Sign Up","green")
         emailInput = input("\tEmail: ")
         passwordInput = input("\tPassword: ")
-        #TODO: email/password verification logic
-        nameInput = input("\tName: ")
-        #TODO: save new student data
+        if checkEmailFormat(emailInput) and checkPasswordFormat(passwordInput):
+            printc("\tEmail and password format acceptable","yellow")
+        
+            studentExists = False
+            for student in self._students:
+                if student.getEmail() == emailInput:
+                    studentExists = True
+            
+            if studentExists:
+                printc(f"\tStudent {student.getName()} already exists","red")
+            else:
+                nameInput = input("\tName: ")
+                printc(f"\tEnrolling Student {nameInput}","yellow")
+                newStudent = Student(nameInput,emailInput,passwordInput)
+                StudentController.createStudent(newStudent)
+                self._students = StudentController.readStudents()
+        else:
+            printc("\tIncorrect email or password format","red")
 
     def menu(self):
         choice = ''
