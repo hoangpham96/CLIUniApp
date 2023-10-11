@@ -41,7 +41,7 @@ class Student:
             printc(f"\t\tYou are now enrolled in {len(self._subjects)} out of 4 subjects","yellow")
         else:
             printc("\t\tStudents are allowed to enrol in 4 subjects only","red")
-        #TODO: save subject
+        StudentController.updateStudents(self)
 
     def remove(self):
         if len(self._subjects) == 0:
@@ -60,7 +60,7 @@ class Student:
         
         if not found:
             printc("\t\tSubject {removeId} does not exist", "red")
-        #TODO: save subject
+        StudentController.updateStudents(self)
 
     def show(self):
         printc(f"\t\tShowing {len(self._subjects)} subjects","yellow")
@@ -106,8 +106,14 @@ class Subject:
         self.calculateGrade()
 
     def generateId(self):
-        #TODO: implement functionality to exclude existing student ID
+        existingSubjects = []
+        for student in StudentController.readStudents():
+            existingSubjects.extend(student.getSubjects())
+        exception = [subject.getId() for subject in existingSubjects]
+        
         id = random.randint(1,999)
+        while id in exception and len(exception) < 999:
+            id = random.randint(1,999)
         return f"{id:03d}"   
      
     def generateMark(self):
