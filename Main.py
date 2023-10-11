@@ -2,15 +2,19 @@ from Utils import printc
 from Utils import inputc
 from Utils import DATA_FILENAME
 import random
+import json
 import os
 
 class Student:
-    def __init__(self,name,email,password) -> None:
-        self._id = self.generateId()
+    def __init__(self, name, email, password, subjects = [], id = None) -> None:
+        if id:
+            self._id = id
+        else:
+            self._id = self.generateId()
         self._name = name
         self._email = email
         self._password = password
-        self._subjects = []
+        self._subjects = subjects
 
     def generateId(self):
         #TODO: implement functionality to exclude existing student ID
@@ -84,7 +88,7 @@ class Student:
     
     def getSubjects(self):
         return self._subjects
-
+    
 class Subject:
     def __init__(self) -> None:
         self._id = self.generateId()
@@ -131,25 +135,50 @@ class Database:
                 handler.close()
 
     def read(self):
-        result = ''
+        result = []
+        
         with open(DATA_FILENAME,'r') as handler:
-            result = handler.read()
+            result = json.load(handler)
             handler.close()
 
         return result
 
     def update(self, data):
         with open(DATA_FILENAME,'w') as handler:
-                handler.write(data)
-                handler.close()
+            json.dump(data,handler,indent=2)
+            handler.close()
 
     def delete(self):
         if self.check():
             os.remove(DATA_FILENAME)
 
+class StudentController:
+    def readStudents():
+        db = Database()
+
+        result = []
+
+        for student in db.read():
+            result.append(Student(student["name"],student["email"],student["password"],student["subjects"],student["id"]))
+
+        return result
+    
+    def updateStudents(student):
+        db = Database()
+
+    def deleteStudents(student):
+        db = Database()
+
+    def checkStudentId(cls, id):
+        db = Database()
+        for st in cls.readStudents():
+            if st.getId() == id:
+                return True
+        return False
+
 class University:
     def __init__(self) -> None:
-        self.students = [Student("test","test","test")] #TODO: replace with student data read from file
+        self._students = StudentController.readStudents()
 
     def adminMenu(self):
         choice = ''
@@ -178,7 +207,8 @@ class University:
         pass
 
     def showStudents(self):
-        pass
+        #TODO: pretify this
+        print(StudentController.readStudents())
 
     def studentMenu(self):
         choice = ''
@@ -196,7 +226,7 @@ class University:
         emailInput = input("\tEmail: ").lower()
         passwordInput = input("\tPassword: ").lower()
         #TODO: email/password verification logic
-        self.students[0].menu()
+        self._students[0].menu()
 
     def studentRegister(self):
         printc("\tStudent Sign Up","green")
