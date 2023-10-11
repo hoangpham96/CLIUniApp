@@ -115,10 +115,12 @@ class Student:
         return f"{id:06d}"
 
     def changePassword(self) -> None:
-        #TODO: implement password format checker
         newPassword = input("\t\tNew Password: ")
-        newPasswordConfirm = input("\t\tConfirm Password: ")
+        while not checkPasswordFormat(newPassword):
+            printc("\t\tIncorrect password format - try again", "red")
+            newPassword = input("\t\tNew Password: ")
 
+        newPasswordConfirm = input("\t\tConfirm Password: ")
         while newPassword != newPasswordConfirm:
             printc("\t\tPassword does not match - try again", "red")
             newPasswordConfirm = input("\t\tConfirm Password: ")
@@ -193,7 +195,7 @@ class Student:
         return {"id": self._id, "name":self._name, "email":self._email, "password":self._password, "subjects":[s.toDict() for s in self._subjects]}
 
 #Class to control the handling of Student data
-#TODO: Figure out a better way to do this than Class method
+#TODO @Hoang Figure out a better way to do this than Class method
 class StudentController:
     @classmethod
     def createStudent(cls,student) -> None:
@@ -263,18 +265,23 @@ class University:
                 case _: printc("\tUnknown choice","red")
 
     def clearDatabase(self) -> None:
+        #TODO: @Christian
         pass
 
     def groupStudents(self) -> None:
+        #TODO: @Christian
         pass
 
     def partitionStudents(self) -> None:
+        #TODO: @Christian
         pass
 
     def removeStudent(self) -> None:
+        #TODO: @Christian
         pass
 
     def showStudents(self) -> None:
+        #TODO: @Christian
         pass
 
     #Student Menu
