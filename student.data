@@ -1,3 +1,9 @@
 [
-    {"id":1,"name":"Test","email":"Test@test.com","password":"Test123","subjects":[]}
+	{
+		"id": 1,
+		"name": "Test",
+		"email": "Test@test.com",
+		"password": "test",
+		"subjects": []
+	}
 ]

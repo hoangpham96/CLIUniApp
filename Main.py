@@ -17,8 +17,10 @@ class Student:
         self._subjects = subjects
 
     def generateId(self):
-        #TODO: implement functionality to exclude existing student ID
+        exception = [student.getId() for student in StudentController.readStudents()]
         id = random.randint(1,999999)
+        while id in exception:
+            id = random.randint(1,999999)
         return f"{id:06d}"
 
     def changePassword(self):
@@ -31,6 +33,7 @@ class Student:
             newPasswordConfirm = input("\t\tConfirm Password: ")
 
         self._password = newPassword
+        StudentController.updateStudents(self)
 
     def enrol(self):
         if len(self._subjects) < 4:
@@ -40,6 +43,7 @@ class Student:
             printc(f"\t\tYou are now enrolled in {len(self._subjects)} out of 4 subjects","yellow")
         else:
             printc("\t\tStudents are allowed to enrol in 4 subjects only","red")
+        #TODO: save subject
 
     def remove(self):
         if len(self._subjects) == 0:
@@ -58,6 +62,7 @@ class Student:
         
         if not found:
             printc("\t\tSubject {removeId} does not exist", "red")
+        #TODO: save subject
 
     def show(self):
         printc(f"\t\tShowing {len(self._subjects)} subjects","yellow")
@@ -88,7 +93,14 @@ class Student:
     
     def getSubjects(self):
         return self._subjects
+
+    def getPassword(self):
+        return self._password
     
+    #Convert to Dictionary so that it can be saved as JSON format
+    def toDict(self):
+        return {"id": self._id, "name":self._name, "email":self._email, "password":self._password, "subjects":[s.toDict() for s in self._subjects]}
+
 class Subject:
     def __init__(self) -> None:
         self._id = self.generateId()
@@ -124,6 +136,11 @@ class Subject:
     def getGrade(self):
         return self._grade
 
+    #Convert to Dictionary so that it can be saved as JSON format
+    def toDict(self):
+        return {"id": self._id, "mark":self._mark, "grade":self._grade}
+
+#Class to create a 'connection' to the database. In this case, it is a .data file
 class Database:
     def check(self):
         return os.path.exists(DATA_FILENAME)
@@ -136,7 +153,7 @@ class Database:
 
     def read(self):
         result = []
-        
+
         with open(DATA_FILENAME,'r') as handler:
             result = json.load(handler)
             handler.close()
@@ -145,36 +162,59 @@ class Database:
 
     def update(self, data):
         with open(DATA_FILENAME,'w') as handler:
-            json.dump(data,handler,indent=2)
+            json.dump(data,handler,indent="\t")
             handler.close()
 
     def delete(self):
         if self.check():
             os.remove(DATA_FILENAME)
 
+#Class to control the handling of Student data
+#TODO: Figure out a better way to do this than Class method
 class StudentController:
-    def readStudents():
+    @classmethod
+    def createStudent(cls,student):
+        result = cls.readStudents()
+        result.append(student)
+        cls.updateDatabase(result)
+    
+    @classmethod
+    def readStudents(cls):
         db = Database()
 
         result = []
 
-        for student in db.read():
-            result.append(Student(student["name"],student["email"],student["password"],student["subjects"],student["id"]))
+        for data in db.read():
+            student = Student(data["name"],data["email"],data["password"],data["subjects"],data["id"])
+            result.append(student)
 
         return result
-    
-    def updateStudents(student):
-        db = Database()
 
-    def deleteStudents(student):
-        db = Database()
+    @classmethod
+    def updateStudents(cls,student):
+        result = cls.readStudents()
+        for index, st in enumerate(result):
+            if st.getId() == student.getId():
+                result[index] = student
 
-    def checkStudentId(cls, id):
+        cls.updateDatabase(result)
+
+    @classmethod
+    def deleteStudents(cls,student):
+        result = cls.readStudents()
+        for index, st in enumerate(result):
+            if st.getId() == student.getId():
+                result.pop(index)
+
+        cls.updateDatabase(result)
+
+    @classmethod
+    def updateDatabase(cls, data):
         db = Database()
-        for st in cls.readStudents():
-            if st.getId() == id:
-                return True
-        return False
+        
+        result = [d.toDict() for d in data]
+
+        db.update(result)
 
 class University:
     def __init__(self) -> None:
@@ -223,17 +263,27 @@ class University:
 
     def studentLogin(self):
         printc("\tStudent Sign In","green")
-        emailInput = input("\tEmail: ").lower()
-        passwordInput = input("\tPassword: ").lower()
-        #TODO: email/password verification logic
-        self._students[0].menu()
+        emailInput = input("\tEmail: ")
+        passwordInput = input("\tPassword: ")
+
+        #Check student login. If no match, Student Login will be a None object
+        studentLogin = None
+        for student in self._students:
+            if student.getEmail() == emailInput and student.getPassword() == passwordInput:   
+                studentLogin = student
+
+        #If successful login
+        if studentLogin:
+            studentLogin.menu()
+        else:
+            printc("\tInvalid Login","red")
 
     def studentRegister(self):
         printc("\tStudent Sign Up","green")
-        emailInput = input("\tEmail: ").lower()
-        passwordInput = input("\tPassword: ").lower()
+        emailInput = input("\tEmail: ")
+        passwordInput = input("\tPassword: ")
         #TODO: email/password verification logic
-        nameInput = input("\tName: ").lower()
+        nameInput = input("\tName: ")
         #TODO: save new student data
 
     def menu(self):
