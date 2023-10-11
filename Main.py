@@ -3,25 +3,118 @@ import random
 import json
 import os
 
+#Class to create a 'connection' to the database. In this case, it is a .data file
+class Database:
+    def check(self) -> None:
+        return os.path.exists(DATA_FILENAME)
+
+    def create(self) -> None:
+        with open(DATA_FILENAME,'w') as handler:
+            handler.write("")
+            handler.close()
+
+    def read(self) -> any:
+        result = []
+
+        with open(DATA_FILENAME,'r') as handler:
+            result = json.load(handler)
+            handler.close()
+
+        return result
+
+    def update(self, data) -> None:
+        with open(DATA_FILENAME,'w') as handler:
+            json.dump(data,handler,indent="\t")
+            handler.close()
+
+    def delete(self) -> None:
+        if self.check():
+            os.remove(DATA_FILENAME)
+
+class Subject:
+    def __init__(self, id = None, mark = None, grade = None) -> None:
+        if id:
+            self._id = id
+        else:
+            self._id = self.generateId()
+
+        if mark:
+            self._mark = mark
+        else:
+            self._mark = self.generateMark()
+
+        if grade:
+            self._grade = grade
+        else:
+            self._grade = self.calculateGrade()
+
+    def generateId(self) -> str:
+        existingSubjects = []
+        for student in StudentController.readStudents():
+            existingSubjects.extend(student.getSubjects())
+        exception = [subject.getId() for subject in existingSubjects]
+
+        id = random.randint(1,999)
+        while id in exception and len(exception) < 999:
+            id = random.randint(1,999)
+        return f"{id:03d}"   
+     
+    def generateMark(self) -> int:
+        return random.randint(25,100)
+
+    def calculateGrade(self) -> str:
+        grade = ""
+        
+        if self._mark >= 85:
+            grade = "HD"
+        elif self._mark >= 75:
+            grade = "D"
+        elif self._mark >= 65:
+            grade = "C"
+        elif self._mark >= 50:
+            grade = "P"
+        else:
+            grade = "Z"
+
+        return grade
+
+    def getId(self) -> str:
+        return self._id
+    
+    def getMark(self) -> int:
+        return self._mark
+    
+    def getGrade(self) -> str:
+        return self._grade
+
+    #Convert to Dictionary so that it can be saved as JSON format
+    def toDict(self) -> dict:
+        return {"id": self._id, "mark":self._mark, "grade":self._grade}
+    
 class Student:
     def __init__(self, name, email, password, subjects = [], id = None) -> None:
         if id:
             self._id = id
         else:
             self._id = self.generateId()
+
         self._name = name
         self._email = email
         self._password = password
-        self._subjects = subjects
 
-    def generateId(self):
+        if subjects:
+            self._subjects = [Subject(s["id"], s["mark"], s["grade"]) for s in subjects]
+        else:
+            self._subjects = []
+
+    def generateId(self) -> str:
         exception = [student.getId() for student in StudentController.readStudents()]
         id = random.randint(1,999999)
         while id in exception:
             id = random.randint(1,999999)
         return f"{id:06d}"
 
-    def changePassword(self):
+    def changePassword(self) -> None:
         #TODO: implement password format checker
         newPassword = input("\t\tNew Password: ")
         newPasswordConfirm = input("\t\tConfirm Password: ")
@@ -33,7 +126,7 @@ class Student:
         self._password = newPassword
         StudentController.updateStudents(self)
 
-    def enrol(self):
+    def enrol(self) -> None:
         if len(self._subjects) < 4:
             sub = Subject()
             printc(f"\t\tEnrolling in Subject-{sub.getId()}","yellow")
@@ -43,7 +136,7 @@ class Student:
             printc("\t\tStudents are allowed to enrol in 4 subjects only","red")
         StudentController.updateStudents(self)
 
-    def remove(self):
+    def remove(self) -> None:
         if len(self._subjects) == 0:
             printc("\t\tNo subjects enrolled","red")
             return
@@ -62,12 +155,12 @@ class Student:
             printc("\t\tSubject {removeId} does not exist", "red")
         StudentController.updateStudents(self)
 
-    def show(self):
+    def show(self) -> None:
         printc(f"\t\tShowing {len(self._subjects)} subjects","yellow")
         for sub in self._subjects:
             print(f"\t\t[ Subject::{sub.getId()} -- mark = {sub.getMark(): >3} -- grade = {sub.getGrade(): >3} ]")
 
-    def menu(self):
+    def menu(self) -> None:
         choice = ''
         while choice != 'x':
             choice = inputc("\t\tStudent Course Menu (c/e/r/s/x): ","cyan").lower()
@@ -80,111 +173,39 @@ class Student:
                 case 'x': break
                 case _: printc("\t\tUnknown choice","red")
 
-    def getId(self):
+    def getId(self) -> str:
         return self._id
     
-    def getName(self):
+    def getName(self) -> str:
         return self._name
     
-    def getEmail(self):
+    def getEmail(self) -> str:
         return self._email
     
-    def getSubjects(self):
+    def getSubjects(self) -> []:
         return self._subjects
 
-    def getPassword(self):
+    def getPassword(self) -> str:
         return self._password
     
     #Convert to Dictionary so that it can be saved as JSON format
-    def toDict(self):
+    def toDict(self) -> dict:
         return {"id": self._id, "name":self._name, "email":self._email, "password":self._password, "subjects":[s.toDict() for s in self._subjects]}
-
-class Subject:
-    def __init__(self) -> None:
-        self._id = self.generateId()
-        self.generateMark()
-        self.calculateGrade()
-
-    def generateId(self):
-        existingSubjects = []
-        for student in StudentController.readStudents():
-            existingSubjects.extend(student.getSubjects())
-        exception = [subject.getId() for subject in existingSubjects]
-        
-        id = random.randint(1,999)
-        while id in exception and len(exception) < 999:
-            id = random.randint(1,999)
-        return f"{id:03d}"   
-     
-    def generateMark(self):
-        self._mark = random.randint(25,100)
-
-    def calculateGrade(self):
-        if self._mark >= 85:
-            self._grade = "HD"
-        elif self._mark >= 75:
-            self._grade = "D"
-        elif self._mark >= 65:
-            self._grade = "C"
-        elif self._mark >= 50:
-            self._grade = "P"
-        else:
-            self._grade = "Z"
-
-    def getId(self):
-        return self._id
-    
-    def getMark(self):
-        return self._mark
-    
-    def getGrade(self):
-        return self._grade
-
-    #Convert to Dictionary so that it can be saved as JSON format
-    def toDict(self):
-        return {"id": self._id, "mark":self._mark, "grade":self._grade}
-
-#Class to create a 'connection' to the database. In this case, it is a .data file
-class Database:
-    def check(self):
-        return os.path.exists(DATA_FILENAME)
-
-    def create(self):
-        if not self.check():
-            with open(DATA_FILENAME,'w') as handler:
-                handler.write("")
-                handler.close()
-
-    def read(self):
-        result = []
-
-        with open(DATA_FILENAME,'r') as handler:
-            result = json.load(handler)
-            handler.close()
-
-        return result
-
-    def update(self, data):
-        with open(DATA_FILENAME,'w') as handler:
-            json.dump(data,handler,indent="\t")
-            handler.close()
-
-    def delete(self):
-        if self.check():
-            os.remove(DATA_FILENAME)
 
 #Class to control the handling of Student data
 #TODO: Figure out a better way to do this than Class method
 class StudentController:
     @classmethod
-    def createStudent(cls,student):
+    def createStudent(cls,student) -> None:
         result = cls.readStudents()
         result.append(student)
         cls.updateDatabase(result)
     
     @classmethod
-    def readStudents(cls):
+    def readStudents(cls) -> [any]:
         db = Database()
+        if not db.check():
+            return []
 
         result = []
 
@@ -195,7 +216,7 @@ class StudentController:
         return result
 
     @classmethod
-    def updateStudents(cls,student):
+    def updateStudents(cls,student) -> None:
         result = cls.readStudents()
         for index, st in enumerate(result):
             if st.getId() == student.getId():
@@ -204,7 +225,7 @@ class StudentController:
         cls.updateDatabase(result)
 
     @classmethod
-    def deleteStudents(cls,student):
+    def deleteStudents(cls,student) -> None:
         result = cls.readStudents()
         for index, st in enumerate(result):
             if st.getId() == student.getId():
@@ -213,8 +234,10 @@ class StudentController:
         cls.updateDatabase(result)
 
     @classmethod
-    def updateDatabase(cls, data):
+    def updateDatabase(cls, data) -> None:
         db = Database()
+        if not db.check():
+            db.create()
         
         result = [d.toDict() for d in data]
 
@@ -224,7 +247,8 @@ class University:
     def __init__(self) -> None:
         self._students = StudentController.readStudents()
 
-    def adminMenu(self):
+    #Admin Menu
+    def adminMenu(self) -> None:
         choice = ''
         while choice != 'x':
             choice = inputc("\tAdmin System (c/g/p/r/s/x): ","cyan").lower()
@@ -238,23 +262,23 @@ class University:
                 case 'x': break
                 case _: printc("\tUnknown choice","red")
 
-    def clearDatabase(self):
+    def clearDatabase(self) -> None:
         pass
 
-    def groupStudents(self):
+    def groupStudents(self) -> None:
         pass
 
-    def partitionStudents(self):
+    def partitionStudents(self) -> None:
         pass
 
-    def removeStudent(self):
+    def removeStudent(self) -> None:
         pass
 
-    def showStudents(self):
-        #TODO: pretify this
-        print(StudentController.readStudents())
+    def showStudents(self) -> None:
+        pass
 
-    def studentMenu(self):
+    #Student Menu
+    def studentMenu(self) -> None:
         choice = ''
         while choice != 'x':
             choice = inputc("\tStudent System (l/r/x): ","cyan").lower()
@@ -265,16 +289,18 @@ class University:
                 case 'x': break
                 case _: printc("\tUnknown choice","red")
 
-    def studentLogin(self):
+    #Login Student
+    def studentLogin(self) -> None:
         printc("\tStudent Sign In","green")
         emailInput = input("\tEmail: ")
         passwordInput = input("\tPassword: ")
 
         #Check student login. If no match, Student Login will be a None object
         studentLogin = None
-        for student in self._students:
-            if student.getEmail() == emailInput and student.getPassword() == passwordInput:   
-                studentLogin = student
+        if self._students:
+            for student in self._students:
+                if student.getEmail() == emailInput and student.getPassword() == passwordInput:   
+                    studentLogin = student
 
         #If successful login
         if studentLogin:
@@ -282,7 +308,8 @@ class University:
         else:
             printc("\tStudent does not exist","red")
 
-    def studentRegister(self):
+    #Register Student
+    def studentRegister(self) -> None:
         printc("\tStudent Sign Up","green")
         emailInput = input("\tEmail: ")
         passwordInput = input("\tPassword: ")
@@ -290,9 +317,10 @@ class University:
             printc("\tEmail and password format acceptable","yellow")
         
             studentExists = False
-            for student in self._students:
-                if student.getEmail() == emailInput:
-                    studentExists = True
+            if self._students:
+                for student in self._students:
+                    if student.getEmail() == emailInput:
+                        studentExists = True
             
             if studentExists:
                 printc(f"\tStudent {student.getName()} already exists","red")
@@ -305,7 +333,8 @@ class University:
         else:
             printc("\tIncorrect email or password format","red")
 
-    def menu(self):
+    #Main University Menu
+    def menu(self) -> None:
         choice = ''
         while choice != 'x':
             choice = inputc("University System: (A)dmin, (S)tudent, or e(X)it: ","cyan").lower()

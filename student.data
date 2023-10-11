@@ -4,7 +4,28 @@
 		"name": "For Quick Testing",
 		"email": "test@test.com",
 		"password": "test",
-		"subjects": []
+		"subjects": [
+			{
+				"id": "850",
+				"mark": 83,
+				"grade": "D"
+			},
+			{
+				"id": "132",
+				"mark": 89,
+				"grade": "HD"
+			},
+			{
+				"id": "467",
+				"mark": 56,
+				"grade": "P"
+			},
+			{
+				"id": "069",
+				"mark": 94,
+				"grade": "HD"
+			}
+		]
 	},
 	{
 		"id": "732792",
@@ -18,6 +39,13 @@
 		"name": "Hoang Pham",
 		"email": "Hoang.Pham@university.com",
 		"password": "Hoangpham2210",
+		"subjects": []
+	},
+	{
+		"id": "285107",
+		"name": "Hoang Pham 2",
+		"email": "h.pham@university.com",
+		"password": "Helloworld123",
 		"subjects": []
 	}
 ]
