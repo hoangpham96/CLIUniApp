@@ -5,14 +5,17 @@ import os
 
 #Class to create a 'connection' to the database. In this case, it is a .data file
 class Database:
+    #Check if datafile exists
     def check(self) -> None:
         return os.path.exists(DATA_FILENAME)
 
+    #Create datafile
     def create(self) -> None:
         with open(DATA_FILENAME,'w') as handler:
             handler.write("")
             handler.close()
 
+    #Read datafile
     def read(self) -> any:
         result = []
 
@@ -22,11 +25,13 @@ class Database:
 
         return result
 
+    #Update datafile
     def update(self, data) -> None:
         with open(DATA_FILENAME,'w') as handler:
             json.dump(data,handler,indent="\t")
             handler.close()
 
+    #Delete datafile
     def delete(self) -> None:
         if self.check():
             os.remove(DATA_FILENAME)
@@ -48,6 +53,7 @@ class Subject:
         else:
             self._grade = self.calculateGrade()
 
+    #Auto Generate ID. Also includes check to see if subject id exists or not
     def generateId(self) -> str:
         existingSubjects = []
         for student in StudentController.readStudents():
@@ -58,10 +64,12 @@ class Subject:
         while id in exception and len(exception) < 999:
             id = random.randint(1,999)
         return f"{id:03d}"   
-     
+
+    #Generate student mark 
     def generateMark(self) -> int:
         return random.randint(25,100)
 
+    #Calculate the student grade based on mark
     def calculateGrade(self) -> str:
         grade = ""
         
@@ -78,18 +86,23 @@ class Subject:
 
         return grade
 
+    #Get ID
     def getId(self) -> str:
         return self._id
     
+    #Get Mark
     def getMark(self) -> int:
         return self._mark
     
+    #Get Grade
     def getGrade(self) -> str:
         return self._grade
 
     #Convert to Dictionary so that it can be saved as JSON format
     def toDict(self) -> dict:
-        return {"id": self._id, "mark":self._mark, "grade":self._grade}
+        return {"id": self._id, 
+                "mark":self._mark, 
+                "grade":self._grade}
     
 class Student:
     def __init__(self, name, email, password, subjects = [], id = None) -> None:
@@ -107,6 +120,7 @@ class Student:
         else:
             self._subjects = []
 
+    #Auto Generate ID. Also includes check to see if subject id exists or not
     def generateId(self) -> str:
         exception = [student.getId() for student in StudentController.readStudents()]
         id = random.randint(1,999999)
@@ -114,6 +128,7 @@ class Student:
             id = random.randint(1,999999)
         return f"{id:06d}"
 
+    #Change Password
     def changePassword(self) -> None:
         newPassword = input("\t\tNew Password: ")
         while not checkPasswordFormat(newPassword):
@@ -126,8 +141,9 @@ class Student:
             newPasswordConfirm = input("\t\tConfirm Password: ")
 
         self._password = newPassword
-        StudentController.updateStudents(self)
+        StudentController.updateStudent(self)
 
+    #Enrol subject
     def enrol(self) -> None:
         if len(self._subjects) < 4:
             sub = Subject()
@@ -136,8 +152,9 @@ class Student:
             printc(f"\t\tYou are now enrolled in {len(self._subjects)} out of 4 subjects","yellow")
         else:
             printc("\t\tStudents are allowed to enrol in 4 subjects only","red")
-        StudentController.updateStudents(self)
+        StudentController.updateStudent(self)
 
+    #Remove subject
     def remove(self) -> None:
         if len(self._subjects) == 0:
             printc("\t\tNo subjects enrolled","red")
@@ -155,13 +172,15 @@ class Student:
         
         if not found:
             printc("\t\tSubject {removeId} does not exist", "red")
-        StudentController.updateStudents(self)
+        StudentController.updateStudent(self)
 
+    #Show all student's subjects
     def show(self) -> None:
         printc(f"\t\tShowing {len(self._subjects)} subjects","yellow")
         for sub in self._subjects:
             print(f"\t\t[ Subject::{sub.getId()} -- mark = {sub.getMark(): >3} -- grade = {sub.getGrade(): >3} ]")
 
+    #Student Menu
     def menu(self) -> None:
         choice = ''
         while choice != 'x':
@@ -175,27 +194,37 @@ class Student:
                 case 'x': break
                 case _: printc("\t\tUnknown choice","red")
 
+    #Get ID
     def getId(self) -> str:
         return self._id
     
+    #Get Name
     def getName(self) -> str:
         return self._name
     
+    #Get Email
     def getEmail(self) -> str:
         return self._email
     
+    #Get Subjects
     def getSubjects(self) -> []:
         return self._subjects
 
+    #Get Password
     def getPassword(self) -> str:
         return self._password
     
     #Convert to Dictionary so that it can be saved as JSON format
     def toDict(self) -> dict:
-        return {"id": self._id, "name":self._name, "email":self._email, "password":self._password, "subjects":[s.toDict() for s in self._subjects]}
+        return {"id": self._id, 
+                "name":self._name, 
+                "email":self._email, 
+                "password":self._password, 
+                "subjects":[s.toDict() for s in self._subjects]}
 
 #Class to control the handling of Student data
 class StudentController:
+    #Read Student from Database
     def readStudents() -> [any]:
         db = Database()
         if not db.check():
@@ -204,17 +233,19 @@ class StudentController:
         result = []
 
         for data in db.read():
-            student = Student(data["name"],data["email"],data["password"],data["subjects"],data["id"])
+            student = Student(data["name"], data["email"], data["password"], data["subjects"], data["id"])
             result.append(student)
 
         return result
     
+    #Read Student in Database
     def createStudent(student) -> None:
         result = StudentController.readStudents()
         result.append(student)
         StudentController.updateDatabase(result)
 
-    def updateStudents(student) -> None:
+    #Update Student in Database
+    def updateStudent(student) -> None:
         result = StudentController.readStudents()
         for index, st in enumerate(result):
             if st.getId() == student.getId():
@@ -222,7 +253,8 @@ class StudentController:
 
         StudentController.updateDatabase(result)
 
-    def deleteStudents(student) -> None:
+    #Delete Student in Database
+    def deleteStudent(student) -> None:
         result = StudentController.readStudents()
         for index, st in enumerate(result):
             if st.getId() == student.getId():
@@ -230,6 +262,7 @@ class StudentController:
 
         StudentController.updateDatabase(result)
 
+    #Commit the changes to database
     def updateDatabase(data) -> None:
         db = Database()
         if not db.check():
@@ -241,7 +274,7 @@ class StudentController:
 
 class University:
     def __init__(self) -> None:
-        self._students = StudentController.readStudents()
+        self._students = StudentController.readStudents() #self._students acts as a cache for all student data in University class
 
     #Admin Menu
     def adminMenu(self) -> None:
@@ -259,19 +292,19 @@ class University:
                 case _: printc("\tUnknown choice","red")
 
     def clearDatabase(self) -> None:
-        #TODO: @Christian
+        #TODO: @Christian call delete from Database class
         pass
 
     def groupStudents(self) -> None:
-        #TODO: @Christian
+        #TODO: @Christian read from self._students and print data
         pass
 
     def partitionStudents(self) -> None:
-        #TODO: @Christian
+        #TODO: @Christian read from self._students and print data
         pass
 
     def removeStudent(self) -> None:
-        #TODO: @Christian
+        #TODO: @Christian remove student from self._students and from file. Remember to call StudentController.deleteStudent
         pass
 
     def showStudents(self) -> None:
