@@ -195,16 +195,8 @@ class Student:
         return {"id": self._id, "name":self._name, "email":self._email, "password":self._password, "subjects":[s.toDict() for s in self._subjects]}
 
 #Class to control the handling of Student data
-#TODO @Hoang Figure out a better way to do this than Class method
 class StudentController:
-    @classmethod
-    def createStudent(cls,student) -> None:
-        result = cls.readStudents()
-        result.append(student)
-        cls.updateDatabase(result)
-    
-    @classmethod
-    def readStudents(cls) -> [any]:
+    def readStudents() -> [any]:
         db = Database()
         if not db.check():
             return []
@@ -216,27 +208,29 @@ class StudentController:
             result.append(student)
 
         return result
+    
+    def createStudent(student) -> None:
+        result = StudentController.readStudents()
+        result.append(student)
+        StudentController.updateDatabase(result)
 
-    @classmethod
-    def updateStudents(cls,student) -> None:
-        result = cls.readStudents()
+    def updateStudents(student) -> None:
+        result = StudentController.readStudents()
         for index, st in enumerate(result):
             if st.getId() == student.getId():
                 result[index] = student
 
-        cls.updateDatabase(result)
+        StudentController.updateDatabase(result)
 
-    @classmethod
-    def deleteStudents(cls,student) -> None:
-        result = cls.readStudents()
+    def deleteStudents(student) -> None:
+        result = StudentController.readStudents()
         for index, st in enumerate(result):
             if st.getId() == student.getId():
                 result.pop(index)
 
-        cls.updateDatabase(result)
+        StudentController.updateDatabase(result)
 
-    @classmethod
-    def updateDatabase(cls, data) -> None:
+    def updateDatabase(data) -> None:
         db = Database()
         if not db.check():
             db.create()
