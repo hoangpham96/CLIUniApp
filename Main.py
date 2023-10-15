@@ -15,7 +15,7 @@ class Database:
             handler.write("")
             handler.close()
 
-    #Read datafile
+    #Read datafile. Since file is in JSON format, result will be returned in List of Dictionaries format
     def read(self) -> any:
         result = []
 
@@ -25,7 +25,7 @@ class Database:
 
         return result
 
-    #Update datafile
+    #Update datafile. Expects data in List of Dictionaries format
     def update(self, data) -> None:
         with open(DATA_FILENAME,'w') as handler:
             json.dump(data,handler,indent="\t")
@@ -116,6 +116,7 @@ class Student:
         self._password = password
 
         if subjects:
+            #Expects subjects argument in List of Dictionaries format
             self._subjects = [Subject(s["id"], s["mark"], s["grade"]) for s in subjects]
         else:
             self._subjects = []
