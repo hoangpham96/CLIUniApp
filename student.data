@@ -6,11 +6,6 @@
 		"password": "test",
 		"subjects": [
 			{
-				"id": "850",
-				"mark": 83,
-				"grade": "D"
-			},
-			{
 				"id": "132",
 				"mark": 89,
 				"grade": "HD"
@@ -21,9 +16,9 @@
 				"grade": "P"
 			},
 			{
-				"id": "069",
-				"mark": 94,
-				"grade": "HD"
+				"id": "768",
+				"mark": 51,
+				"grade": "P"
 			}
 		]
 	},
@@ -47,5 +42,33 @@
 		"email": "h.pham@university.com",
 		"password": "Helloworld123",
 		"subjects": []
+	},
+	{
+		"id": "577332",
+		"name": "TEsting123",
+		"email": "test.test2@university.com",
+		"password": "Testings123",
+		"subjects": [
+			{
+				"id": "444",
+				"mark": 82,
+				"grade": "D"
+			},
+			{
+				"id": "688",
+				"mark": 71,
+				"grade": "C"
+			},
+			{
+				"id": "679",
+				"mark": 72,
+				"grade": "C"
+			},
+			{
+				"id": "883",
+				"mark": 32,
+				"grade": "Z"
+			}
+		]
 	}
 ]

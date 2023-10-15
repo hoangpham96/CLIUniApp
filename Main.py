@@ -129,70 +129,16 @@ class Student:
         return f"{id:06d}"
 
     #Change Password
-    def changePassword(self) -> None:
-        newPassword = input("\t\tNew Password: ")
-        while not checkPasswordFormat(newPassword):
-            printc("\t\tIncorrect password format - try again", "red")
-            newPassword = input("\t\tNew Password: ")
-
-        newPasswordConfirm = input("\t\tConfirm Password: ")
-        while newPassword != newPasswordConfirm:
-            printc("\t\tPassword does not match - try again", "red")
-            newPasswordConfirm = input("\t\tConfirm Password: ")
-
+    def changePassword(self, newPassword) -> None:
         self._password = newPassword
-        StudentController.updateStudent(self)
 
     #Enrol subject
-    def enrol(self) -> None:
-        if len(self._subjects) < 4:
-            sub = Subject()
-            printc(f"\t\tEnrolling in Subject-{sub.getId()}","yellow")
-            self._subjects.append(sub)
-            printc(f"\t\tYou are now enrolled in {len(self._subjects)} out of 4 subjects","yellow")
-        else:
-            printc("\t\tStudents are allowed to enrol in 4 subjects only","red")
-        StudentController.updateStudent(self)
+    def enrol(self, sub) -> None:
+        self._subjects.append(sub)
 
     #Remove subject
-    def remove(self) -> None:
-        if len(self._subjects) == 0:
-            printc("\t\tNo subjects enrolled","red")
-            return
-
-        removeId = input("\t\tRemove Subject by ID: ")
-        found = False
-        for index, sub in enumerate(self._subjects):
-            if sub.getId() == removeId:
-                printc(f"\t\tDropping Subject-{sub.getId()}","yellow")
-                self._subjects.pop(index)
-                printc(f"\t\tYou are now enrolled in {len(self._subjects)} out of 4 subjects","yellow")
-                found = True
-                break
-        
-        if not found:
-            printc("\t\tSubject {removeId} does not exist", "red")
-        StudentController.updateStudent(self)
-
-    #Show all student's subjects
-    def show(self) -> None:
-        printc(f"\t\tShowing {len(self._subjects)} subjects","yellow")
-        for sub in self._subjects:
-            print(f"\t\t[ Subject::{sub.getId()} -- mark = {sub.getMark(): >3} -- grade = {sub.getGrade(): >3} ]")
-
-    #Student Menu
-    def menu(self) -> None:
-        choice = ''
-        while choice != 'x':
-            choice = inputc("\t\tStudent Course Menu (c/e/r/s/x): ","cyan").lower()
-
-            match choice:
-                case 'c': self.changePassword()
-                case 'e': self.enrol()
-                case 'r': self.remove()
-                case 's': self.show()
-                case 'x': break
-                case _: printc("\t\tUnknown choice","red")
+    def removeSubject(self, subjectIndex) -> None:
+        self._subjects.pop(subjectIndex)
 
     #Get ID
     def getId(self) -> str:
@@ -224,6 +170,72 @@ class Student:
 
 #Class to control the handling of Student data
 class StudentController:
+    #Change Password
+    def changePassword(student) -> None:
+        newPassword = input("\t\tNew Password: ")
+        while not checkPasswordFormat(newPassword):
+            printc("\t\tIncorrect password format - try again", "red")
+            newPassword = input("\t\tNew Password: ")
+
+        newPasswordConfirm = input("\t\tConfirm Password: ")
+        while newPassword != newPasswordConfirm:
+            printc("\t\tPassword does not match - try again", "red")
+            newPasswordConfirm = input("\t\tConfirm Password: ")
+
+        student.changePassword(newPassword)
+        StudentController.updateStudent(student)
+
+    #Enrol subject
+    def enrol(student) -> None:
+        if len(student.getSubjects()) < 4:
+            sub = Subject()
+            printc(f"\t\tEnrolling in Subject-{sub.getId()}","yellow")
+            student.enrol(sub)
+            printc(f"\t\tYou are now enrolled in {len(student.getSubjects())} out of 4 subjects","yellow")
+        else:
+            printc("\t\tStudents are allowed to enrol in 4 subjects only","red")
+        StudentController.updateStudent(student)
+
+    #Remove subject
+    def removeSubject(student) -> None:
+        if len(student.getSubjects()) == 0:
+            printc("\t\tNo subjects enrolled","red")
+            return
+
+        removeId = input("\t\tRemove Subject by ID: ")
+        found = False
+        for index, sub in enumerate(student.getSubjects()):
+            if sub.getId() == removeId:
+                printc(f"\t\tDropping Subject-{sub.getId()}","yellow")
+                student.removeSubject(index)
+                printc(f"\t\tYou are now enrolled in {len(student.getSubjects())} out of 4 subjects","yellow")
+                found = True
+                break
+        
+        if not found:
+            printc("\t\tSubject {removeId} does not exist", "red")
+        StudentController.updateStudent(student)
+
+    #Show all student's subjects
+    def showSubjects(student) -> None:
+        printc(f"\t\tShowing {len(student.getSubjects())} subjects","yellow")
+        for sub in student.getSubjects():
+            print(f"\t\t[ Subject::{sub.getId()} -- mark = {sub.getMark(): >3} -- grade = {sub.getGrade(): >3} ]")
+
+    #Student Menu
+    def studentMenu(student) -> None:
+        choice = ''
+        while choice != 'x':
+            choice = inputc("\t\tStudent Course Menu (c/e/r/s/x): ","cyan").lower()
+
+            match choice:
+                case 'c': StudentController.changePassword(student)
+                case 'e': StudentController.enrol(student)
+                case 'r': StudentController.removeSubject(student)
+                case 's': StudentController.showSubjects(student)
+                case 'x': break
+                case _: printc("\t\tUnknown choice","red")
+
     #Read Student from Database
     def readStudents() -> [any]:
         db = Database()
@@ -330,15 +342,15 @@ class University:
         passwordInput = input("\tPassword: ")
 
         #Check student login. If no match, Student Login will be a None object
-        studentLogin = None
+        studentToLogin = None
         if self._students:
             for student in self._students:
                 if student.getEmail() == emailInput and student.getPassword() == passwordInput:   
-                    studentLogin = student
+                    studentToLogin = student
 
         #If successful login
-        if studentLogin:
-            studentLogin.menu()
+        if studentToLogin:
+            StudentController.studentMenu(studentToLogin)
         else:
             printc("\tStudent does not exist","red")
 
