@@ -214,7 +214,7 @@ class StudentController:
                 break
         
         if not found:
-            printc("\t\tSubject {removeId} does not exist", "red")
+            printc(f"\t\tSubject {removeId} does not exist", "red")
         StudentController.updateStudent(student)
 
     #Show all student's subjects
