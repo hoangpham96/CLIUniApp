@@ -23,7 +23,7 @@ def checkPasswordFormat(input):
 #Print with color function
 def printc(text, color = ''):
     if color.lower() in colorCode:
-        print(colorCode[color].lower() + text + colorCode["end"])
+        print(colorCode[color.lower()] + text + colorCode["end"])
     else:
         print(text)
 
@@ -31,7 +31,7 @@ def printc(text, color = ''):
 def inputc(text, color = ''):
     result = ""
     if color.lower() in colorCode:
-        result = input(colorCode[color].lower() + text + colorCode["end"])
+        result = input(colorCode[color.lower()] + text + colorCode["end"])
     else:
         result = input(text)
 
