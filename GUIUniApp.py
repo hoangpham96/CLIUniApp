@@ -33,12 +33,10 @@ class SubjectsWindow(tk.Toplevel):
         backButton.grid(column=1, row=3, sticky=tk.W, padx=5, pady=5)
         
         def enrol():
-            if len(student.getSubjects()) < 4:
-                sub = Subject()
-                student.enrol(sub)
-                StudentController.updateStudent(student)
-                self.destroy()
+            if StudentController.enrolSubject(student):
+                #Refreshscreen
                 SubjectsWindow(master,student)
+                self.destroy()
             else:
                 info = "Students are allowed to enrol in 4 subjects only"
                 mb.showerror(title="Enrolment Error", message = info)
@@ -50,6 +48,10 @@ class SubjectsWindow(tk.Toplevel):
 class LoginFrame(tk.LabelFrame):
     def __init__(self,master):
         super().__init__(master=master, text="Sign In", bg=GUI_BG, fg="white", padx=20, pady=20, font=GUI_FONT)
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=3)
+        self.place(rely=0.5, relx=0.5, anchor="center")
+        
         
         self.emailLable = tk.Label(self, text="Email:", justify="left", bg=GUI_BG, fg=GUI_FONT_YELLOW, font=GUI_FONT)
         self.emailLable.grid(column=0, row=0, padx=5, pady=5, sticky=tk.W)
@@ -111,8 +113,5 @@ if __name__ == '__main__':
     root.resizable(False,False)
     
     box = LoginFrame(root)
-    box.columnconfigure(0, weight=1)
-    box.columnconfigure(1, weight=3)
-    box.place(rely=0.5, relx=0.5, anchor="center")
         
     root.mainloop()

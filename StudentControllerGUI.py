@@ -2,6 +2,16 @@ from Database import *
 from Student import *
 
 class StudentController:
+    #Enrol Subject
+    def enrolSubject(student):
+        if len(student.getSubjects()) < 4:
+            sub = Subject()
+            student.enrol(sub)
+            StudentController.updateStudent(student)
+            return True
+        
+        return False
+            
     #Validate credentials
     def validateCredentials(email,password):
         studentToLogin = None
