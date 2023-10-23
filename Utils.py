@@ -3,6 +3,9 @@ import re
 DATA_FILENAME = "student.data"
 EMAIL_REGEX = '^.*\..*@(university.com)$'
 PASSWORD_REGEX = '^[A-Z]([a-z]{6,})([0-9]{3,})$'
+GUI_BG = '#607b8d'
+GUI_FONT_YELLOW = '#ffc107'
+GUI_FONT = 'Helvetica 10 bold'
 
 colorCode = {
     "purple" : '\033[95m',

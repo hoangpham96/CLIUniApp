@@ -1,4 +1,6 @@
 from Utils import *
+import tkinter as tk
+import tkinter.messagebox as mb
 import random
 import json
 import os
@@ -222,8 +224,58 @@ class StudentController:
 class University:
     def __init__(self) -> None:
         self._students = StudentController.readStudents() #self._students acts as a cache for all student data in University class
+        
+    def main(self):     
+        root = tk.Tk()
+        root.geometry("300x200")
+        root.title("University App")
+        root.configure(bg=GUI_BG)
+        root.resizable(False,False)
+        
+        box = tk.LabelFrame(root, text="Sign In", bg=GUI_BG, fg='white', padx=20, pady=20, font=GUI_FONT)
+        box.columnconfigure(0, weight=1)
+        box.columnconfigure(1, weight=3)
+        box.place(rely=0.5, relx=0.5, anchor="center")
+        
+        emailLable = tk.Label(box, text="Email:", justify="left", bg=GUI_BG, fg=GUI_FONT_YELLOW, font=GUI_FONT)
+        emailLable.grid(column=0, row=0, padx=5, pady=5, sticky=tk.W)
+        
+        passwordLabel = tk.Label(box, text="Password:", justify="left", bg=GUI_BG, fg=GUI_FONT_YELLOW, font=GUI_FONT)
+        passwordLabel.grid(column=0, row=1, padx=5, pady=5, sticky=tk.W)
+        
+        emailText = tk.StringVar()
+        emailField = tk.Entry(box, textvariable=emailText)
+        emailField.grid(column=1, row=0, padx=5, pady=5)
+        emailField.focus()
+        
+        passwordText = tk.StringVar()
+        passwordField = tk.Entry(box, textvariable=passwordText, show="*")
+        passwordField.grid(column=1, row=1, padx=5, pady=5)
+        
+        cancelButton = tk.Button(box, text="Cancel", command=lambda: root.quit())
+        cancelButton.grid(column=1, row=3, sticky=tk.W, padx=5, pady=5)
+        
+        def login():
+            studentToLogin = None
+            if self._students:
+                for student in self._students:
+                    if student.getEmail() == emailText and student.getPassword() == passwordText:   
+                        studentToLogin = student
 
+            #If successful login
+            if studentToLogin:
+                info = "Login Successful"
+                mb.showinfo(title="Login Confirmation", message = info)
+            else:
+                info = "Login Failed"
+                mb.showinfo(title="Login Confirmation", message = info)
+        
+        loginButton = tk.Button(box, text="Login", command=login)
+        loginButton.grid(column=1, row=3, sticky=tk.E, padx=5, pady=5)
+        
+        root.mainloop()
 
 #Starting the app
 if __name__ == '__main__':
     uni = University()
+    uni.main()
