@@ -256,10 +256,11 @@ class University:
         cancelButton.grid(column=1, row=3, sticky=tk.W, padx=5, pady=5)
         
         def login():
+            #TODO: Add Exception Handling
             studentToLogin = None
             if self._students:
                 for student in self._students:
-                    if student.getEmail() == emailText and student.getPassword() == passwordText:   
+                    if student.getEmail() == emailText.get() and student.getPassword() == passwordText.get():   
                         studentToLogin = student
 
             #If successful login
