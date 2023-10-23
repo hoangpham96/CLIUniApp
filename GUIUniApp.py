@@ -44,7 +44,7 @@ class SubjectsWindow(tk.Toplevel):
                 info = "Students are allowed to enrol in 4 subjects only"
                 mb.showerror(title="Enrolment Error", message = info)
                 self.focus()
-        
+            
         enrolButton = tk.Button(subjectsBox, text="Enrol", command=enrol)
         enrolButton.grid(column=1, row=3, sticky=tk.E, padx=5, pady=5)
 
@@ -109,5 +109,7 @@ if __name__ == '__main__':
     
     loginButton = tk.Button(box, text="Login", command=login)
     loginButton.grid(column=1, row=3, sticky=tk.E, padx=5, pady=5)
+    
+    root.bind("<Return>",lambda event: login())
     
     root.mainloop()
