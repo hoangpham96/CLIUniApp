@@ -185,7 +185,7 @@ class StudentController:
 
         return result
     
-    #Read Student in Database
+    #Create Student in Database
     def createStudent(student) -> None:
         result = StudentController.readStudents()
         result.append(student)
