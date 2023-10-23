@@ -1,30 +1,11 @@
 [
 	{
 		"id": "000001",
-		"name": "For Quick Testing",
+		"name": "Testy McTestface",
 		"email": "test@test.com",
 		"password": "test",
 		"subjects": [
-			{
-				"id": "388",
-				"mark": 66,
-				"grade": "C"
-			},
-			{
-				"id": "760",
-				"mark": 62,
-				"grade": "P"
-			},
-			{
-				"id": "221",
-				"mark": 77,
-				"grade": "D"
-			},
-			{
-				"id": "818",
-				"mark": 57,
-				"grade": "P"
-			}
+
 		]
 	},
 	{
@@ -39,7 +20,28 @@
 		"name": "Hoang Pham",
 		"email": "Hoang.Pham@university.com",
 		"password": "Hoangpham2210",
-		"subjects": []
+		"subjects": [
+			{
+				"id": "474",
+				"mark": 69,
+				"grade": "C"
+			},
+			{
+				"id": "332",
+				"mark": 100,
+				"grade": "HD"
+			},
+			{
+				"id": "228",
+				"mark": 59,
+				"grade": "P"
+			},
+			{
+				"id": "790",
+				"mark": 100,
+				"grade": "HD"
+			}
+		]
 	},
 	{
 		"id": "285107",
@@ -117,6 +119,39 @@
 				"id": "254",
 				"mark": 67,
 				"grade": "C"
+			},
+			{
+				"id": "724",
+				"mark": 62,
+				"grade": "P"
+			}
+		]
+	},
+	{
+		"id": "122241",
+		"name": "TestingTester",
+		"email": "Test.Tester@university.com",
+		"password": "Testing1234",
+		"subjects": [
+			{
+				"id": "280",
+				"mark": 38,
+				"grade": "Z"
+			},
+			{
+				"id": "996",
+				"mark": 44,
+				"grade": "Z"
+			},
+			{
+				"id": "149",
+				"mark": 84,
+				"grade": "D"
+			},
+			{
+				"id": "908",
+				"mark": 61,
+				"grade": "P"
 			}
 		]
 	}
