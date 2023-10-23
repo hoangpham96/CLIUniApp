@@ -297,7 +297,16 @@ if __name__ == '__main__':
     cancelButton.grid(column=1, row=3, sticky=tk.W, padx=5, pady=5)
             
     def login():
-        #TODO: Add Exception Handling
+        if emailText.get() == '':
+            info = "Please enter Email Address"
+            mb.showerror(title="Login Error", message = info)
+            return
+        
+        if passwordText.get() == '':
+            info = "Please enter Password"
+            mb.showerror(title="Login Error", message = info)
+            return
+        
         studentToLogin = None
         if _students:
             for student in _students:
