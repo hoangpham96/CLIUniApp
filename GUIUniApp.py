@@ -228,8 +228,11 @@ class SubjectsWindow(tk.Toplevel):
     def __init__(self,master,student):
         super().__init__(master=master)
         self.title("Enrollment List")
-        self.configure(bg=GUI_BG)
         self.geometry("300x200")
+        x = master.winfo_x()
+        y = master.winfo_y()
+        self.geometry(f"+{x}+{y}")
+        self.configure(bg=GUI_BG)
         self.resizable(False,False)
         
         subjectsBox = tk.LabelFrame(self, text="Subjects", bg=GUI_BG, fg='white', padx=20, pady=20, font=GUI_FONT)
@@ -245,7 +248,19 @@ class SubjectsWindow(tk.Toplevel):
         backButton = tk.Button(subjectsBox, text="Back", command=lambda: self.destroy())
         backButton.grid(column=1, row=3, sticky=tk.W, padx=5, pady=5)
         
-        enrolButton = tk.Button(subjectsBox, text="Enrol", command=lambda: self.destroy())
+        def enrol():
+            if len(student.getSubjects()) < 4:
+                sub = Subject()
+                student.enrol(sub)
+                StudentController.updateStudent(student)
+                self.destroy()
+                SubjectsWindow(master,student)
+            else:
+                info = "Students are allowed to enrol in 4 subjects only"
+                mb.showerror(title="Enrolment Error", message = info)
+                self.focus()
+        
+        enrolButton = tk.Button(subjectsBox, text="Enrol", command=enrol)
         enrolButton.grid(column=1, row=3, sticky=tk.E, padx=5, pady=5)
 
 #Starting the app
