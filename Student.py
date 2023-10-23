@@ -20,7 +20,7 @@ class Student:
 
     #Auto Generate ID. Also includes check to see if subject id exists or not
     def generateId(self) -> str:
-        from StudentControllerCLI import StudentController
+        from StudentControllerCLI import StudentController #Avoiding circular import
 
         exception = [student.getId() for student in StudentController.readStudents()]
         id = random.randint(1,999999)

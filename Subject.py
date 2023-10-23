@@ -19,7 +19,7 @@ class Subject:
 
     #Auto Generate ID. Also includes check to see if subject id exists or not
     def generateId(self) -> str:
-        from StudentControllerCLI import StudentController
+        from StudentControllerCLI import StudentController #Avoiding circular import
 
         existingSubjects = []
         for student in StudentController.readStudents():
