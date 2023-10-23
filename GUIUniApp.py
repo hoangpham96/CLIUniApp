@@ -50,8 +50,6 @@ class SubjectsWindow(tk.Toplevel):
 
 #Starting the app
 if __name__ == '__main__':
-    _students = StudentController.readStudents() #self._students acts as a cache for all student data in University class
-
     root = tk.Tk()
     root.geometry("300x200")
     root.title("University App")
@@ -93,6 +91,7 @@ if __name__ == '__main__':
             return
         
         studentToLogin = None
+        _students = StudentController.readStudents()
         if _students:
             for student in _students:
                 if student.getEmail() == emailText.get() and student.getPassword() == passwordText.get():   
