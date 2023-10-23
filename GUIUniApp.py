@@ -105,6 +105,9 @@ class Subject:
         return {"id": self._id, 
                 "mark":self._mark, 
                 "grade":self._grade}
+        
+    def __str__(self) -> str:
+        return f"Subject: {self._id}, Mark: {self._mark}, Grade: {self._grade}"
     
 class Student:
     def __init__(self, name, email, password, subjects = [], id = None) -> None:
@@ -221,62 +224,81 @@ class StudentController:
 
         db.update(result)
 
-class University:
-    def __init__(self) -> None:
-        self._students = StudentController.readStudents() #self._students acts as a cache for all student data in University class
+class SubjectsWindow(tk.Toplevel):
+    def __init__(self,master,student):
+        super().__init__(master=master)
+        self.title("Enrollment List")
+        self.configure(bg=GUI_BG)
+        self.geometry("300x200")
+        self.resizable(False,False)
         
-    def main(self):     
-        root = tk.Tk()
-        root.geometry("300x200")
-        root.title("University App")
-        root.configure(bg=GUI_BG)
-        root.resizable(False,False)
+        subjectsBox = tk.LabelFrame(self, text="Subjects", bg=GUI_BG, fg='white', padx=20, pady=20, font=GUI_FONT)
+        subjectsBox.columnconfigure(0, weight=1)
+        subjectsBox.columnconfigure(1, weight=3)
+        subjectsBox.place(rely=0.5, relx=0.5, anchor="center")
         
-        box = tk.LabelFrame(root, text="Sign In", bg=GUI_BG, fg='white', padx=20, pady=20, font=GUI_FONT)
-        box.columnconfigure(0, weight=1)
-        box.columnconfigure(1, weight=3)
-        box.place(rely=0.5, relx=0.5, anchor="center")
-        
-        emailLable = tk.Label(box, text="Email:", justify="left", bg=GUI_BG, fg=GUI_FONT_YELLOW, font=GUI_FONT)
-        emailLable.grid(column=0, row=0, padx=5, pady=5, sticky=tk.W)
-        
-        passwordLabel = tk.Label(box, text="Password:", justify="left", bg=GUI_BG, fg=GUI_FONT_YELLOW, font=GUI_FONT)
-        passwordLabel.grid(column=0, row=1, padx=5, pady=5, sticky=tk.W)
-        
-        emailText = tk.StringVar()
-        emailField = tk.Entry(box, textvariable=emailText)
-        emailField.grid(column=1, row=0, padx=5, pady=5)
-        emailField.focus()
-        
-        passwordText = tk.StringVar()
-        passwordField = tk.Entry(box, textvariable=passwordText, show="*")
-        passwordField.grid(column=1, row=1, padx=5, pady=5)
-        
-        cancelButton = tk.Button(box, text="Cancel", command=lambda: root.quit())
-        cancelButton.grid(column=1, row=3, sticky=tk.W, padx=5, pady=5)
-        
-        def login():
-            #TODO: Add Exception Handling
-            studentToLogin = None
-            if self._students:
-                for student in self._students:
-                    if student.getEmail() == emailText.get() and student.getPassword() == passwordText.get():   
-                        studentToLogin = student
+        subjects = student.getSubjects()
+        listVar = tk.Variable(value=subjects)
+        subjectsList = tk.Listbox(subjectsBox, listvariable=listVar, height=5, width= 30)
+        subjectsList.grid(column=1, row=1, sticky=tk.W, padx=5, pady=5)
 
-            #If successful login
-            if studentToLogin:
-                info = "Login Successful"
-                mb.showinfo(title="Login Confirmation", message = info)
-            else:
-                info = "Login Failed"
-                mb.showinfo(title="Login Confirmation", message = info)
+        backButton = tk.Button(subjectsBox, text="Back", command=lambda: self.destroy())
+        backButton.grid(column=1, row=3, sticky=tk.W, padx=5, pady=5)
         
-        loginButton = tk.Button(box, text="Login", command=login)
-        loginButton.grid(column=1, row=3, sticky=tk.E, padx=5, pady=5)
-        
-        root.mainloop()
+        enrolButton = tk.Button(subjectsBox, text="Enrol", command=lambda: self.destroy())
+        enrolButton.grid(column=1, row=3, sticky=tk.E, padx=5, pady=5)
 
 #Starting the app
 if __name__ == '__main__':
-    uni = University()
-    uni.main()
+    _students = StudentController.readStudents() #self._students acts as a cache for all student data in University class
+
+    root = tk.Tk()
+    root.geometry("300x200")
+    root.title("University App")
+    root.configure(bg=GUI_BG)
+    root.resizable(False,False)
+    
+    box = tk.LabelFrame(root, text="Sign In", bg=GUI_BG, fg='white', padx=20, pady=20, font=GUI_FONT)
+    box.columnconfigure(0, weight=1)
+    box.columnconfigure(1, weight=3)
+    box.place(rely=0.5, relx=0.5, anchor="center")
+    
+    emailLable = tk.Label(box, text="Email:", justify="left", bg=GUI_BG, fg=GUI_FONT_YELLOW, font=GUI_FONT)
+    emailLable.grid(column=0, row=0, padx=5, pady=5, sticky=tk.W)
+    
+    passwordLabel = tk.Label(box, text="Password:", justify="left", bg=GUI_BG, fg=GUI_FONT_YELLOW, font=GUI_FONT)
+    passwordLabel.grid(column=0, row=1, padx=5, pady=5, sticky=tk.W)
+    
+    emailText = tk.StringVar()
+    emailField = tk.Entry(box, textvariable=emailText)
+    emailField.grid(column=1, row=0, padx=5, pady=5)
+    emailField.focus()
+    
+    passwordText = tk.StringVar()
+    passwordField = tk.Entry(box, textvariable=passwordText, show="*")
+    passwordField.grid(column=1, row=1, padx=5, pady=5)
+    
+    cancelButton = tk.Button(box, text="Cancel", command=lambda: root.quit())
+    cancelButton.grid(column=1, row=3, sticky=tk.W, padx=5, pady=5)
+            
+    def login():
+        #TODO: Add Exception Handling
+        studentToLogin = None
+        if _students:
+            for student in _students:
+                if student.getEmail() == emailText.get() and student.getPassword() == passwordText.get():   
+                    studentToLogin = student
+
+        #If successful login
+        if studentToLogin:
+            info = "Login Successful"
+            mb.showinfo(title="Login Confirmation", message = info)
+            SubjectsWindow(root,studentToLogin)
+        else:
+            info = "Login Failed"
+            mb.showinfo(title="Login Confirmation", message = info)
+    
+    loginButton = tk.Button(box, text="Login", command=login)
+    loginButton.grid(column=1, row=3, sticky=tk.E, padx=5, pady=5)
+    
+    root.mainloop()
