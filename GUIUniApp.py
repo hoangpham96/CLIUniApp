@@ -7,25 +7,45 @@ from StudentControllerGUI import *
 import tkinter as tk
 import tkinter.messagebox as mb
   
-#Class to control the handling of Student data
+class WelcomeWindow(tk.Toplevel):
+    def __init__(self, master, student):
+        super().__init__(master = master)
+        self.title("Confirmation Window")
+        self.geometry("300x200")
+        x = master.winfo_x()
+        y = master.winfo_y()
+        self.geometry(f"+{x}+{y}")
+        self.configure(bg = GUI_BG)
+        self.resizable(False,False)
+        
+        label = tk.Label(self, text = f"Welcome {student.getName()}!", fg = GUI_FONT_YELLOW, font = GUI_FONT, bg = GUI_BG)
+        label.place(relx = 0.5, rely = 0.5, anchor = "center")
+        
+        def nextWindow():
+            self.destroy()
+            SubjectsWindow(master,student)
+        
+        closeButton = tk.Button(self, text = "Close", command = nextWindow)
+        closeButton.pack(padx = 5, pady = 5, side = "bottom")
+
 class SubjectsWindow(tk.Toplevel):
-    def __init__(self,master,student):
+    def __init__(self, master, student):
         super().__init__(master=master)
         self.title("Enrollment List")
         self.geometry("300x200")
         x = master.winfo_x()
         y = master.winfo_y()
         self.geometry(f"+{x}+{y}")
-        self.configure(bg=GUI_BG)
+        self.configure(bg = GUI_BG)
         self.resizable(False,False)
         
-        subjectsBox = tk.LabelFrame(self, text="Subjects", bg=GUI_BG, fg='white', padx=20, pady=20, font=GUI_FONT)
-        subjectsBox.columnconfigure(0, weight=1)
-        subjectsBox.columnconfigure(1, weight=3)
-        subjectsBox.place(rely=0.5, relx=0.5, anchor="center")
+        subjectsBox = tk.LabelFrame(self, text = "Subjects", bg = GUI_BG, fg = 'white', padx = 20, pady = 20, font = GUI_FONT)
+        subjectsBox.columnconfigure(0, weight = 1)
+        subjectsBox.columnconfigure(1, weight = 3)
+        subjectsBox.place(rely = 0.5, relx = 0.5, anchor = "center")
         
         subjects = student.getSubjects()
-        listVar = tk.Variable(value=subjects)
+        listVar = tk.Variable(value = subjects)
         subjectsList = tk.Listbox(subjectsBox, listvariable=listVar, height=5, width= 30)
         subjectsList.grid(column=1, row=1, sticky=tk.W, padx=5, pady=5)
 
@@ -39,8 +59,7 @@ class SubjectsWindow(tk.Toplevel):
                 self.destroy()
             else:
                 info = "Students are allowed to enrol in 4 subjects only"
-                mb.showerror(title="Enrolment Error", message = info)
-                self.focus()
+                mb.showerror(title="Enrolment Error", message = info, parent = self)
             
         enrolButton = tk.Button(subjectsBox, text="Enrol", command=enrol)
         enrolButton.grid(column=1, row=3, sticky=tk.E, padx=5, pady=5)
@@ -89,15 +108,13 @@ class LoginFrame(tk.LabelFrame):
 
         #If successful login
         if studentToLogin:
-            info = "Login Successful"
-            mb.showinfo(title="Login Confirmation", message = info)
-            root.unbind("<Return>")
-            SubjectsWindow(root,studentToLogin)
+            # info = "Login Successful"
+            # mb.showinfo(title="Login Confirmation", message = info)
+            WelcomeWindow(root,studentToLogin)
             self.clear()
-            
         else:
-            info = "Login Failed"
-            mb.showinfo(title="Login Confirmation", message = info)
+            info = "Incorrect Email or Password"
+            mb.showerror(title="Login Confirmation", message = info)
             self.clear()
             
     def clear(self):
