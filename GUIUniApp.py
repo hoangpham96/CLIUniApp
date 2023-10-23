@@ -6,7 +6,6 @@ from StudentControllerGUI import *
 
 import tkinter as tk
 import tkinter.messagebox as mb
-import random
   
 #Class to control the handling of Student data
 class SubjectsWindow(tk.Toplevel):
@@ -48,6 +47,61 @@ class SubjectsWindow(tk.Toplevel):
         enrolButton = tk.Button(subjectsBox, text="Enrol", command=enrol)
         enrolButton.grid(column=1, row=3, sticky=tk.E, padx=5, pady=5)
 
+class LoginFrame(tk.LabelFrame):
+    def __init__(self,master):
+        super().__init__(master=master, text="Sign In", bg=GUI_BG, fg="white", padx=20, pady=20, font=GUI_FONT)
+        
+        self.emailLable = tk.Label(self, text="Email:", justify="left", bg=GUI_BG, fg=GUI_FONT_YELLOW, font=GUI_FONT)
+        self.emailLable.grid(column=0, row=0, padx=5, pady=5, sticky=tk.W)
+        
+        self.passwordLabel = tk.Label(self, text="Password:", justify="left", bg=GUI_BG, fg=GUI_FONT_YELLOW, font=GUI_FONT)
+        self.passwordLabel.grid(column=0, row=1, padx=5, pady=5, sticky=tk.W)
+        
+        self.emailText = tk.StringVar()
+        self.emailField = tk.Entry(self, textvariable=self.emailText)
+        self.emailField.grid(column=1, row=0, padx=5, pady=5)
+        self.emailField.focus()
+        
+        self.passwordText = tk.StringVar()
+        self.passwordField = tk.Entry(self, textvariable=self.passwordText, show="*")
+        self.passwordField.grid(column=1, row=1, padx=5, pady=5)
+        
+        self.cancelButton = tk.Button(self, text="Cancel", command=lambda: root.quit())
+        self.cancelButton.grid(column=1, row=3, sticky=tk.W, padx=5, pady=5)
+        
+        self.loginButton = tk.Button(self, text="Login", command=self.login)
+        self.loginButton.grid(column=1, row=3, sticky=tk.E, padx=5, pady=5)
+        
+    def login(self):
+        if self.emailText.get() == '':
+            info = "Please enter Email Address"
+            mb.showerror(title="Login Error", message = info)
+            return
+        
+        if self.passwordText.get() == '':
+            info = "Please enter Password"
+            mb.showerror(title="Login Error", message = info)
+            return
+
+        studentToLogin = StudentController.validateCredentials(self.emailText.get(), self.passwordText.get())        
+
+        #If successful login
+        if studentToLogin:
+            info = "Login Successful"
+            mb.showinfo(title="Login Confirmation", message = info)
+            root.unbind("<Return>")
+            SubjectsWindow(root,studentToLogin)
+            self.clear()
+            
+        else:
+            info = "Login Failed"
+            mb.showinfo(title="Login Confirmation", message = info)
+            self.clear()
+            
+    def clear(self):
+        self.emailField.delete(0,tk.END)
+        self.passwordField.delete(0,tk.END)
+
 #Starting the app
 if __name__ == '__main__':
     root = tk.Tk()
@@ -56,59 +110,9 @@ if __name__ == '__main__':
     root.configure(bg=GUI_BG)
     root.resizable(False,False)
     
-    box = tk.LabelFrame(root, text="Sign In", bg=GUI_BG, fg='white', padx=20, pady=20, font=GUI_FONT)
+    box = LoginFrame(root)
     box.columnconfigure(0, weight=1)
     box.columnconfigure(1, weight=3)
     box.place(rely=0.5, relx=0.5, anchor="center")
-    
-    emailLable = tk.Label(box, text="Email:", justify="left", bg=GUI_BG, fg=GUI_FONT_YELLOW, font=GUI_FONT)
-    emailLable.grid(column=0, row=0, padx=5, pady=5, sticky=tk.W)
-    
-    passwordLabel = tk.Label(box, text="Password:", justify="left", bg=GUI_BG, fg=GUI_FONT_YELLOW, font=GUI_FONT)
-    passwordLabel.grid(column=0, row=1, padx=5, pady=5, sticky=tk.W)
-    
-    emailText = tk.StringVar()
-    emailField = tk.Entry(box, textvariable=emailText)
-    emailField.grid(column=1, row=0, padx=5, pady=5)
-    emailField.focus()
-    
-    passwordText = tk.StringVar()
-    passwordField = tk.Entry(box, textvariable=passwordText, show="*")
-    passwordField.grid(column=1, row=1, padx=5, pady=5)
-    
-    cancelButton = tk.Button(box, text="Cancel", command=lambda: root.quit())
-    cancelButton.grid(column=1, row=3, sticky=tk.W, padx=5, pady=5)
-            
-    def login():
-        if emailText.get() == '':
-            info = "Please enter Email Address"
-            mb.showerror(title="Login Error", message = info)
-            return
         
-        if passwordText.get() == '':
-            info = "Please enter Password"
-            mb.showerror(title="Login Error", message = info)
-            return
-        
-        studentToLogin = None
-        _students = StudentController.readStudents()
-        if _students:
-            for student in _students:
-                if student.getEmail() == emailText.get() and student.getPassword() == passwordText.get():   
-                    studentToLogin = student
-
-        #If successful login
-        if studentToLogin:
-            info = "Login Successful"
-            mb.showinfo(title="Login Confirmation", message = info)
-            SubjectsWindow(root,studentToLogin)
-        else:
-            info = "Login Failed"
-            mb.showinfo(title="Login Confirmation", message = info)
-    
-    loginButton = tk.Button(box, text="Login", command=login)
-    loginButton.grid(column=1, row=3, sticky=tk.E, padx=5, pady=5)
-    
-    root.bind("<Return>",lambda event: login())
-    
     root.mainloop()

@@ -2,6 +2,17 @@ from Database import *
 from Student import *
 
 class StudentController:
+    #Validate credentials
+    def validateCredentials(email,password):
+        studentToLogin = None
+        _students = StudentController.readStudents()
+        if _students:
+            for student in _students:
+                if student.getEmail() == email and student.getPassword() == password:   
+                    studentToLogin = student
+                    
+        return studentToLogin
+    
     #Read Student from Database
     def readStudents() -> [any]:
         db = Database()
