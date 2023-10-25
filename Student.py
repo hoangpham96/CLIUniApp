@@ -24,7 +24,7 @@ class Student:
 
         exception = [student.getId() for student in StudentController.readStudents()]
         id = random.randint(1,999999)
-        while id in exception:
+        while id in exception and len(exception) < 999999:
             id = random.randint(1,999999)
         return f"{id:06d}"
 
@@ -33,8 +33,8 @@ class Student:
         self._password = newPassword
 
     #Enrol subject
-    def enrol(self, sub) -> None:
-        self._subjects.append(sub)
+    def enrol(self, subject) -> None:
+        self._subjects.append(subject)
 
     #Remove subject
     def removeSubject(self, subjectIndex) -> None:

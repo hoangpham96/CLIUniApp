@@ -69,7 +69,7 @@ class StudentController:
                 case _: printc("\t\tUnknown choice","red")
 
     #Read Student from Database
-    def readStudents() -> [any]:
+    def readStudents() -> []:
         db = Database()
         if not db.check():
             return []

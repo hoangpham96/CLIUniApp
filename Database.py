@@ -15,7 +15,7 @@ class Database:
             handler.close()
 
     #Read datafile. Since file is in JSON format, result will be returned in List of Dictionaries format
-    def read(self) -> any:
+    def read(self) -> []:
         result = []
 
         with open(DATA_FILENAME,'r') as handler:

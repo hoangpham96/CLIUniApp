@@ -5,7 +5,26 @@
 		"email": "test@test.com",
 		"password": "test",
 		"subjects": [
-
+			{
+				"id": "915",
+				"mark": 56,
+				"grade": "P"
+			},
+			{
+				"id": "026",
+				"mark": 71,
+				"grade": "C"
+			},
+			{
+				"id": "230",
+				"mark": 44,
+				"grade": "Z"
+			},
+			{
+				"id": "816",
+				"mark": 29,
+				"grade": "Z"
+			}
 		]
 	},
 	{
@@ -132,26 +151,33 @@
 		"name": "TestingTester",
 		"email": "Test.Tester@university.com",
 		"password": "Testing1234",
+		"subjects": []
+	},
+	{
+		"id": "305398",
+		"name": "Hoang Pham",
+		"email": "test.test@university.com",
+		"password": "Testing1234",
 		"subjects": [
 			{
-				"id": "280",
-				"mark": 38,
-				"grade": "Z"
+				"id": "565",
+				"mark": 86,
+				"grade": "HD"
 			},
 			{
-				"id": "996",
+				"id": "910",
+				"mark": 57,
+				"grade": "P"
+			},
+			{
+				"id": "608",
 				"mark": 44,
 				"grade": "Z"
 			},
 			{
-				"id": "149",
-				"mark": 84,
-				"grade": "D"
-			},
-			{
-				"id": "908",
-				"mark": 61,
-				"grade": "P"
+				"id": "841",
+				"mark": 73,
+				"grade": "C"
 			}
 		]
 	}
