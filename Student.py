@@ -64,7 +64,7 @@ class Student:
         return None
     
     #Get Average grade of all subjects. Returns None if there is no Subject
-    def getSubjectsAverageMark(self) -> str:
+    def getSubjectsAverageGrade(self) -> str:
         if self._subjects:
             avgMark = self.getSubjectsAverageMark()
             if avgMark:
