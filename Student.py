@@ -56,6 +56,21 @@ class Student:
     def getSubjects(self) -> []:
         return self._subjects
 
+    #Get Average mark of all subjects. Returns None if there is no Subject
+    def getSubjectsAverageMark(self) -> float:
+        if self._subjects:
+            allMarks = [s.getMark() for s in self._subjects]
+            return sum(allMarks) / len(allMarks)
+        return None
+    
+    #Get Average grade of all subjects. Returns None if there is no Subject
+    def getSubjectsAverageMark(self) -> str:
+        if self._subjects:
+            avgMark = self.getSubjectsAverageMark()
+            if avgMark:
+                return Subject.calculateGradeOnMark(avgMark)
+        return None
+
     #Get Password
     def getPassword(self) -> str:
         return self._password

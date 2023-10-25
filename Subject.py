@@ -37,21 +37,22 @@ class Subject:
 
     #Calculate the student grade based on mark
     def calculateGrade(self) -> str:
-        grade = ""
-        
-        if self._mark >= 85:
-            grade = "HD"
-        elif self._mark >= 75:
-            grade = "D"
-        elif self._mark >= 65:
-            grade = "C"
-        elif self._mark >= 50:
-            grade = "P"
+        return Subject.calculateGradeOnMark(self._mark)
+
+    #Reusable function to calculate grade based on mark
+    @staticmethod
+    def calculateGradeOnMark(mark) -> str:        
+        if mark >= 85:
+            return "HD"
+        elif mark >= 75:
+            return "D"
+        elif mark >= 65:
+            return "C"
+        elif mark >= 50:
+            return "P"
         else:
-            grade = "Z"
-
-        return grade
-
+            return "Z"
+    
     #Get ID
     def getId(self) -> str:
         return self._id
