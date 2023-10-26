@@ -120,6 +120,7 @@ class LoginFrame(tk.LabelFrame):
     def clear(self):
         self.emailField.delete(0,tk.END)
         self.passwordField.delete(0,tk.END)
+        self.emailField.focus()
 
 #Starting the app
 if __name__ == '__main__':
