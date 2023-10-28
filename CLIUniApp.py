@@ -32,24 +32,18 @@ class University:
         printc("\tGrade Grouping", "yellow")
 
         allstudents = StudentController.readStudents()
-        if allstudents:
+        if allstudents: #If there's data
             gradeGroups = {}
             for student in allstudents:
                 studentAvgGrade = student.getSubjectsAverageGrade()
-                if studentAvgGrade:
+                if studentAvgGrade: #If Student can have average grade (has at least 1 subject)
                     if studentAvgGrade in gradeGroups:
                         gradeGroups[studentAvgGrade].append(student)
                     else:
                         gradeGroups[studentAvgGrade] = [student]
 
-            for group in gradeGroups:
-                groupStr = "["
-                for student in gradeGroups[group]:
-                    if groupStr != "[":
-                        groupStr += ", "
-                    groupStr += student.getStudentSummary()
-                groupStr += "]"
-                print(f"\t{group} --> {groupStr}")
+            University.displayCohorts(gradeGroups)
+
         else:
             print("\t\t< Nothing to Display >")
 
@@ -57,26 +51,32 @@ class University:
         printc("\tPASS/FAIL Partition", "yellow")
 
         allstudents = StudentController.readStudents()
-        if allstudents:
+        if allstudents: #If there's data
             passFail = {"PASS": [], "FAIL": []}
             for student in allstudents:
                 studentAvgGrade = student.getSubjectsAverageGrade()
-                if studentAvgGrade:
+                if studentAvgGrade: #If Student can have average grade (has at least 1 subject)
                     if studentAvgGrade != 'Z':
                         passFail["PASS"].append(student)
                     else:
                         passFail["FAIL"].append(student)
 
-            for group in passFail:
-                groupStr = "["
-                for student in passFail[group]:
-                    if groupStr != "[":
-                        groupStr += ", "
-                    groupStr += student.getStudentSummary()
-                groupStr += "]"
-                print(f"\t{group} --> {groupStr}")
+            University.displayCohorts(passFail)
+
         else:
             print("\t\t< Nothing to Display >")
+
+    @staticmethod
+    #Function to display a dictionary as Key --> List
+    def displayCohorts(cohort) -> None:
+        for group in cohort:
+            groupStr = "["
+            for student in cohort[group]:
+                if groupStr != "[":
+                    groupStr += ", "
+                groupStr += student.getStudentSummary()
+            groupStr += "]"
+            print(f"\t{group} --> {groupStr}")
 
     def removeStudent(self) -> None:
         choice = input("\tRemove by ID: ")
