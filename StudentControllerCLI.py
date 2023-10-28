@@ -106,6 +106,14 @@ class StudentController:
 
         StudentController.updateDatabase(result)
 
+    #Find Student
+    def findStudent(studentID) -> Student:
+        allStudents = StudentController.readStudents()
+        for student in allStudents:
+            if student.getId() == studentID:
+                return student
+        return None
+
     #Commit the changes to database
     def updateDatabase(data) -> None:
         db = Database()

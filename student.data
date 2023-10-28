@@ -1,182 +1,74 @@
 [
 	{
-		"id": "000001",
-		"name": "Testy McTestface",
-		"email": "test@test.com",
-		"password": "test",
+		"id": "671043",
+		"name": "Hoang Pham",
+		"email": "hoang.pham@university.com",
+		"password": "Testing1234",
 		"subjects": [
 			{
-				"id": "915",
-				"mark": 56,
-				"grade": "P"
-			},
-			{
-				"id": "026",
-				"mark": 71,
+				"id": "144",
+				"mark": 67,
 				"grade": "C"
 			},
 			{
-				"id": "230",
-				"mark": 44,
-				"grade": "Z"
+				"id": "997",
+				"mark": 99,
+				"grade": "HD"
 			},
 			{
-				"id": "816",
-				"mark": 29,
+				"id": "499",
+				"mark": 43,
 				"grade": "Z"
 			}
 		]
 	},
 	{
-		"id": "732792",
-		"name": "Alen Jones",
-		"email": "alen.jones@university.com",
-		"password": "Hellowworld222",
+		"id": "965266",
+		"name": "John Smith",
+		"email": "john.smith@university.com",
+		"password": "Testing123",
+		"subjects": [
+			{
+				"id": "498",
+				"mark": 43,
+				"grade": "Z"
+			}
+		]
+	},
+	{
+		"id": "626921",
+		"name": "Emma Pebble",
+		"email": "emma.pebble@university.com",
+		"password": "Testing123",
 		"subjects": []
 	},
 	{
-		"id": "900886",
-		"name": "Hoang Pham",
-		"email": "Hoang.Pham@university.com",
-		"password": "Hoangpham2210",
+		"id": "895603",
+		"name": "Benedict Cucumberbatch",
+		"email": "b.cucumber@university.com",
+		"password": "Testing123",
 		"subjects": [
 			{
-				"id": "474",
-				"mark": 69,
-				"grade": "C"
-			},
-			{
-				"id": "332",
-				"mark": 100,
-				"grade": "HD"
-			},
-			{
-				"id": "228",
-				"mark": 59,
-				"grade": "P"
-			},
-			{
-				"id": "790",
-				"mark": 100,
-				"grade": "HD"
-			}
-		]
-	},
-	{
-		"id": "285107",
-		"name": "Hoang Pham 2",
-		"email": "h.pham@university.com",
-		"password": "Helloworld123",
-		"subjects": [
-			{
-				"id": "891",
-				"mark": 54,
-				"grade": "P"
-			},
-			{
-				"id": "383",
-				"mark": 58,
-				"grade": "P"
-			},
-			{
-				"id": "723",
-				"mark": 89,
-				"grade": "HD"
-			},
-			{
-				"id": "154",
-				"mark": 44,
-				"grade": "Z"
-			}
-		]
-	},
-	{
-		"id": "577332",
-		"name": "TEsting123",
-		"email": "test.test2@university.com",
-		"password": "Testings123",
-		"subjects": [
-			{
-				"id": "444",
-				"mark": 82,
+				"id": "032",
+				"mark": 84,
 				"grade": "D"
 			},
 			{
-				"id": "688",
-				"mark": 71,
-				"grade": "C"
-			},
-			{
-				"id": "679",
-				"mark": 72,
-				"grade": "C"
-			},
-			{
-				"id": "883",
-				"mark": 32,
-				"grade": "Z"
+				"id": "991",
+				"mark": 81,
+				"grade": "D"
 			}
 		]
 	},
 	{
-		"id": "152179",
-		"name": "Tester",
-		"email": "Test.students@university.com",
+		"id": "109416",
+		"name": "Taylor Fast",
+		"email": "tay.tay@university.com",
 		"password": "Testing1234",
 		"subjects": [
 			{
-				"id": "707",
-				"mark": 67,
-				"grade": "C"
-			},
-			{
-				"id": "903",
-				"mark": 89,
-				"grade": "HD"
-			},
-			{
-				"id": "254",
-				"mark": 67,
-				"grade": "C"
-			},
-			{
-				"id": "724",
-				"mark": 62,
-				"grade": "P"
-			}
-		]
-	},
-	{
-		"id": "122241",
-		"name": "TestingTester",
-		"email": "Test.Tester@university.com",
-		"password": "Testing1234",
-		"subjects": []
-	},
-	{
-		"id": "305398",
-		"name": "Hoang Pham",
-		"email": "test.test@university.com",
-		"password": "Testing1234",
-		"subjects": [
-			{
-				"id": "565",
-				"mark": 86,
-				"grade": "HD"
-			},
-			{
-				"id": "910",
-				"mark": 57,
-				"grade": "P"
-			},
-			{
-				"id": "608",
-				"mark": 44,
-				"grade": "Z"
-			},
-			{
-				"id": "841",
-				"mark": 73,
+				"id": "676",
+				"mark": 69,
 				"grade": "C"
 			}
 		]

@@ -21,25 +21,81 @@ class University:
                 case _: printc("\tUnknown choice","red")
 
     def clearDatabase(self) -> None:
-        #TODO: @Christian call delete from Database class
-        pass
+        printc(f"\tClearing students database","yellow")
+        choice = inputc("\tAre you sure you want to clear the database (Y)ES/(N)O: ","red")
+        if choice.lower() == "y":
+            db = Database()
+            db.delete()
+            printc(f"\tStudents data cleared","yellow")
 
     def groupStudents(self) -> None:
-        #TODO: @Christian read from StudentController.readStudents() and print data
-        pass
+        printc("\tGrade Grouping", "yellow")
+
+        allstudents = StudentController.readStudents()
+        if allstudents:
+            gradeGroups = {}
+            for student in allstudents:
+                studentAvgGrade = student.getSubjectsAverageGrade()
+                if studentAvgGrade:
+                    if studentAvgGrade in gradeGroups:
+                        gradeGroups[studentAvgGrade].append(student)
+                    else:
+                        gradeGroups[studentAvgGrade] = [student]
+
+            for group in gradeGroups:
+                groupStr = "["
+                for student in gradeGroups[group]:
+                    if groupStr != "[":
+                        groupStr += ", "
+                    groupStr += student.getStudentSummary()
+                groupStr += "]"
+                print(f"\t{group} --> {groupStr}")
+        else:
+            print("\t\t< Nothing to Display >")
 
     def partitionStudents(self) -> None:
-        #TODO: @Christian read from StudentController.readStudents() and print data
-        pass
+        printc("\tPASS/FAIL Partition", "yellow")
+
+        allstudents = StudentController.readStudents()
+        if allstudents:
+            passFail = {"PASS": [], "FAIL": []}
+            for student in allstudents:
+                studentAvgGrade = student.getSubjectsAverageGrade()
+                if studentAvgGrade:
+                    if studentAvgGrade != 'Z':
+                        passFail["PASS"].append(student)
+                    else:
+                        passFail["FAIL"].append(student)
+
+            for group in passFail:
+                groupStr = "["
+                for student in passFail[group]:
+                    if groupStr != "[":
+                        groupStr += ", "
+                    groupStr += student.getStudentSummary()
+                groupStr += "]"
+                print(f"\t{group} --> {groupStr}")
+        else:
+            print("\t\t< Nothing to Display >")
 
     def removeStudent(self) -> None:
-        #TODO: @Christian remove student from StudentController.readStudents() and from file. 
-        #Remember to call StudentController.deleteStudent
-        pass
+        choice = input("\tRemove by ID: ")
+        studentToRemove = StudentController.findStudent(choice)
+        if studentToRemove:
+            printc(f"\tRemoving Student {choice} Account","yellow")
+            StudentController.deleteStudent(studentToRemove)
+        else:
+            printc(f"\tStudent {choice} does not exist","red")
 
     def showStudents(self) -> None:
-        #TODO: @Christian read from StudentController.readStudents() and print data
-        pass
+        printc("\tStudent List", "yellow")
+
+        allstudents = StudentController.readStudents()
+        if allstudents:
+            for student in allstudents:
+                print(f"\t{student.getName()} :: {student.getId()} --> Email: {student.getEmail()}")
+        else:
+            print("\t\t< Nothing to Display >")
 
     #Student Menu
     def studentMenu(self) -> None:

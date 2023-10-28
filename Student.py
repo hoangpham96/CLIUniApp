@@ -71,6 +71,12 @@ class Student:
                 return Subject.calculateGradeOnMark(avgMark)
         return None
 
+    #Get Summary of student (Name, ID, AvgGrade, AvgMark). Return only Name and ID if no Subjects
+    def getStudentSummary(self) -> str:
+        if self._subjects:
+            return f"{self._name} :: {self._id} --> GRADE: {self.getSubjectsAverageGrade()} - MARK: {self.getSubjectsAverageMark():.2f}"
+        return f"{self._name} :: {self._id}"
+
     #Get Password
     def getPassword(self) -> str:
         return self._password
